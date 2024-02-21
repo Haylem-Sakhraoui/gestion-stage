@@ -1,5 +1,6 @@
 package com.esprit.backend.Configuration;
 
+import io.swagger.models.HttpMethod;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -49,7 +50,7 @@ public class SecurityConfig {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
-                .requestMatchers("/api/v1/auth/**")
+                .requestMatchers("/api/v1/auth/**","/reclamation/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
