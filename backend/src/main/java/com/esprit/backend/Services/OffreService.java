@@ -41,4 +41,23 @@ public class OffreService implements IOffreService{
     public Offre updateStage(Offre offre) {
         return offreRepo.save(offre);
     }
+  @Override
+  public void likeStage(long idstage) {
+   Offre offre = offreRepo.findById(idstage).orElse(null);
+    if (offre!= null) {
+      offre.setLikes(offre.getLikes() + 1);
+      offreRepo.save(offre);
+    }
+
+
+  }
+
+  @Override
+  public void dislikeStage(long idstage) {
+    Offre offre = offreRepo.findById(idstage).orElse(null);
+    if (offre != null) {
+      offre.setDislikes(offre.getDislikes() + 1);
+      offreRepo.save(offre);
+    }
+  }
 }

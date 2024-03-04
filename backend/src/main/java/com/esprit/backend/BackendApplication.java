@@ -29,7 +29,7 @@ public class BackendApplication {
 	}
 
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/api/**") // Spécifiez le chemin de votre API
+		registry.addMapping("/**") // Spécifiez le chemin de votre API
 				.allowedOrigins("http://localhost:4200") // Autorisez les requêtes depuis ce domaine
 				.allowedMethods("GET", "POST", "PUT", "DELETE") // Autorisez les méthodes HTTP spécifiées
 				.allowCredentials(true); // Autorisez l'envoi des cookies
