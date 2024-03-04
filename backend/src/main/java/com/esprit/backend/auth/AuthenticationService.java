@@ -4,8 +4,11 @@ import com.esprit.backend.Configuration.JwtService;
 import com.esprit.backend.Entity.Role;
 import com.esprit.backend.Entity.User;
 import com.esprit.backend.Repository.UserRepository;
+import io.jsonwebtoken.io.IOException;
 import jakarta.persistence.Entity;
+import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,7 +45,7 @@ public class AuthenticationService {
                 .studentClass(request.getStudentClass())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole()) // Assuming all registered users have STUDENT role by default
+                .role(request.getRole())
                 .build();
 
             userRepository.save(user);
@@ -67,4 +70,6 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .build();
     }
+
+
 }

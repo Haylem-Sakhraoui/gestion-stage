@@ -1,5 +1,6 @@
 package com.esprit.backend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +22,7 @@ import java.util.Set;
 @Builder
 public class User implements UserDetails {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstname;
     private String lastname;
@@ -29,8 +30,12 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
+    @OneToOne
+    private Token token;
+    @Enumerated(EnumType.STRING)
     private Role role;
-
+    private Boolean enabled = false;
 
     @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
     private Set<Reclamation> reclamation;
