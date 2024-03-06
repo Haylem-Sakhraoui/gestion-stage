@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
+
 @Entity
 @Getter
 @Setter
@@ -15,18 +17,16 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Offre {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
-    long IdStage;
+public class CvStage implements Serializable {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Setter(AccessLevel.NONE)
+  long IdCv;
+  private String Nom;
+  private String Prenom;
+  private String Classe;
+  private byte[] CvFile;
 
-    String TypeStage;
 
-    String Description;
-    int    NbStagiaire;
-    String Competence;
-  private int likes;
-  private int dislikes;
 
 }
