@@ -88,7 +88,7 @@ public class ReclamationController {
         return serviceReclamation.getAllReclamationsWithUsers();
     }
 
-    @DeleteMapping("/{idReclamation}")
+    @DeleteMapping("/deleteRec/{idReclamation}")
     public ResponseEntity<Void> deleteReclamation(@PathVariable long idReclamation) {
         serviceReclamation.deleteReclamationById(idReclamation);
         return ResponseEntity.noContent().build();

@@ -1,6 +1,7 @@
 package com.esprit.backend.Services;
 
 
+import com.esprit.backend.DTO.Mail;
 import com.esprit.backend.DTO.Response;
 import com.esprit.backend.Entity.ReclamationWithUserDetails;
 import com.esprit.backend.Entity.Reclamation;
@@ -9,7 +10,9 @@ import com.esprit.backend.Entity.User;
 import com.esprit.backend.Repository.ReclamationRepository;
 import com.esprit.backend.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 public class ReclamationService implements IReclamationService{
     private final  ReclamationRepository reclamationRepository;
   private final UserRepository userRepository;
+    private final EmailService emailService;
    /* @Override
     public Reclamation ajouterReclamation(Reclamation reclamation){
         reclamation = reclamationRepository.save(reclamation);
@@ -32,7 +36,7 @@ public class ReclamationService implements IReclamationService{
 public List<Reclamation> getAllReclamation() {
         return (List<Reclamation>) reclamationRepository.findAll();
     }*/
-
+/*
     @Override
     public void addReclamationWithDetails(ReclamationWithUserDetails reclamationDetails) {
         Reclamation reclamation = Reclamation.builder()
@@ -49,6 +53,7 @@ public List<Reclamation> getAllReclamation() {
         // Save the reclamation using a repository or other method
         reclamationRepository.save(reclamation);
     }
+    */
     @Override
     public Reclamation addReclamation(ReclamationWithUserDetails reclamationDetails) {
         // Retrieve User by id_user or by firstname, lastname, and email
@@ -57,7 +62,6 @@ public List<Reclamation> getAllReclamation() {
             user = userRepository.findById(reclamationDetails.getIduser())
                     .orElseThrow(() -> new NotFoundException("User not found with id: " + reclamationDetails.getIduser()));
         } else {
-
             user = (User) userRepository.findByFirstnameAndLastnameAndEmail(
                     reclamationDetails.getFirstname(),
                     reclamationDetails.getLastname(),
@@ -73,11 +77,30 @@ public List<Reclamation> getAllReclamation() {
                 .dateCreation(reclamationDetails.getDateCreation())
                 .description(reclamationDetails.getDescription())
                 .statutReclamation(reclamationDetails.getStatutReclamation())
-                .user(user) // Associate the Reclamation with the User
+                .user(user)
                 .build();
 
         // Save the Reclamation to the database
-        return reclamationRepository.save(reclamation);
+        reclamation = reclamationRepository.save(reclamation);
+
+        // Sending confirmation email
+        final String subject = "Email Confirmation";
+        String url = reclamationDetails.getEmail() + "/confirmEmail/";
+        String body =
+                "<div><h3>Dear  " + reclamationDetails.getFirstname() + " " + reclamationDetails.getLastname() + " </h3>" +
+                        "<br>" +
+                        "<h4>Thank you for registering on our website. In order to complete the creation of your account, it is necessary to confirm your email address.</h4>" +
+                        "<h4>please <a href='" + url + "'>click here</a>.</h4>" +
+                        "<h4>If you need help, please contact the website administrator.</h4>" +
+                        "<br>" +
+                        "<h4>Admin</h4></div>";
+        Mail mail = new Mail(reclamationDetails.getEmail(), subject, body);
+        try {
+            emailService.sendMail(mail);
+            return reclamation;
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Mail invalid", exception);
+        }
     }
 
 
