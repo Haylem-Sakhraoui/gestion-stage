@@ -14,6 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
@@ -50,7 +52,12 @@ public class SecurityConfig {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
-                .requestMatchers("/api/v1/auth/**","/reclamation/**")
+
+
+      .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/forgetPassword/**","/user/resetPassword/**","/offre/** ")
+
+
+
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -64,15 +71,18 @@ public class SecurityConfig {
         return http.build();
     }
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","OPTIONS","DELETE","PUT"));
-        configuration.setAllowedHeaders(Arrays.asList("X-Requested-With","Origin","Content-Type","Accept","Authorization"));
-        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Headers", "Authorization", "responseType", "observe", "userId", "role"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("Origin", "Content-Type", "Accept", "Authorization")
+                        .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
+                        .maxAge(3600);
+            }
+        };
     }
 
 }

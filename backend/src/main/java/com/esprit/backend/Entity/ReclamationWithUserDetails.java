@@ -22,6 +22,14 @@ public class ReclamationWithUserDetails {
 private Long iduser;
 
     // Constructors (if needed)
-
+    public ReclamationWithUserDetails(String firstname, String lastname, String email,
+                                      Date dateCreation, String description, StatutReclamation statutReclamation) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.dateCreation = dateCreation;
+        this.description = description;
+        this.statutReclamation = statutReclamation;
+    }
 }
 

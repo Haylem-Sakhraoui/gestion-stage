@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -39,6 +41,24 @@ public class BackendApplication {
 				.allowedMethods("GET", "POST", "PUT", "DELETE") // Autorisez les méthodes HTTP spécifiées
 				.allowCredentials(true); // Autorisez l'envoi des cookies
 	}
+
+//	@Bean
+//	public JavaMailSender javaMailSender() {
+//		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+//		// Configure mailSender properties (host, port, username, password, etc.)
+//		mailSender.setHost("smtp-mail.outlook.com");
+//		mailSender.setPort(587);
+//		mailSender.setUsername("haylem.sakhraoui@esprit.tn");
+//		mailSender.setPassword("Voshs@1999");
+//		return mailSender;
+//	}
+
+//	public void addCorsMappings(CorsRegistry registry) {
+//		registry.addMapping("/api/**") // Spécifiez le chemin de votre API
+//				.allowedOrigins("http://localhost:4200") // Autorisez les requêtes depuis ce domaine
+//				.allowedMethods("GET", "POST", "PUT", "DELETE") // Autorisez les méthodes HTTP spécifiées
+//				.allowCredentials(true); // Autorisez l'envoi des cookies
+//	}
 
 
 }

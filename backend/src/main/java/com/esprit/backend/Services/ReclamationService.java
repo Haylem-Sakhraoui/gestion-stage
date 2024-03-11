@@ -1,31 +1,40 @@
 package com.esprit.backend.Services;
 
 
-import com.esprit.backend.DTO.Mail;
 import com.esprit.backend.DTO.Response;
 import com.esprit.backend.Entity.ReclamationWithUserDetails;
 import com.esprit.backend.Entity.Reclamation;
 import com.esprit.backend.Entity.StatutReclamation;
 import com.esprit.backend.Entity.User;
 import com.esprit.backend.Repository.ReclamationRepository;
+
 import com.esprit.backend.Repository.UserRepository;
+import com.esprit.backend.auth.Mail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor
 public class ReclamationService implements IReclamationService{
     private final  ReclamationRepository reclamationRepository;
+
   private final UserRepository userRepository;
     private final EmailService emailService;
    /* @Override
+=======
+    @Override
+>>>>>>> 282da086cf69489b764bb08939a501c01811c706
     public Reclamation ajouterReclamation(Reclamation reclamation){
         reclamation = reclamationRepository.save(reclamation);
         return reclamation;
@@ -54,54 +63,39 @@ public List<Reclamation> getAllReclamation() {
         reclamationRepository.save(reclamation);
     }
     */
-    @Override
-    public Reclamation addReclamation(ReclamationWithUserDetails reclamationDetails) {
-        // Retrieve User by id_user or by firstname, lastname, and email
-        User user;
-        if (reclamationDetails.getIduser() != null) {
-            user = userRepository.findById(reclamationDetails.getIduser())
-                    .orElseThrow(() -> new NotFoundException("User not found with id: " + reclamationDetails.getIduser()));
-        } else {
-            user = (User) userRepository.findByFirstnameAndLastnameAndEmail(
-                    reclamationDetails.getFirstname(),
-                    reclamationDetails.getLastname(),
-                    reclamationDetails.getEmail()
-            ).orElseThrow(() -> new NotFoundException(
-                    "User not found with firstname: " + reclamationDetails.getFirstname() +
-                            ", lastname: " + reclamationDetails.getLastname() +
-                            ", email: " + reclamationDetails.getEmail()
-            ));
-        }
+   @Override
+   public Reclamation addReclamation(ReclamationWithUserDetails reclamationDetails) {
+       // Retrieve User by id_user or by firstname, lastname, and email
+       User user;
+       if (reclamationDetails.getIduser() != null) {
+           user = userRepository.findById(reclamationDetails.getIduser())
+                   .orElseThrow(() -> new NotFoundException("User not found with id: " + reclamationDetails.getIduser()));
+       } else {
+           user = (User) userRepository.findByFirstnameAndLastnameAndEmail(
+                   reclamationDetails.getFirstname(),
+                   reclamationDetails.getLastname(),
+                   reclamationDetails.getEmail()
+           ).orElseThrow(() -> new NotFoundException(
+                   "User not found with firstname: " + reclamationDetails.getFirstname() +
+                           ", lastname: " + reclamationDetails.getLastname() +
+                           ", email: " + reclamationDetails.getEmail()
+           ));
+       }
 
-        Reclamation reclamation = Reclamation.builder()
-                .dateCreation(reclamationDetails.getDateCreation())
-                .description(reclamationDetails.getDescription())
-                .statutReclamation(reclamationDetails.getStatutReclamation())
-                .user(user)
-                .build();
+       Reclamation reclamation = Reclamation.builder()
+               .dateCreation(reclamationDetails.getDateCreation())
+               .description(reclamationDetails.getDescription())
+               .statutReclamation(reclamationDetails.getStatutReclamation())
+               .user(user)
+               .build();
 
-        // Save the Reclamation to the database
-        reclamation = reclamationRepository.save(reclamation);
+       // Save the Reclamation to the database
+       reclamation = reclamationRepository.save(reclamation);
 
-        // Sending confirmation email
-        final String subject = "Email Confirmation";
-        String url = reclamationDetails.getEmail() + "/confirmEmail/";
-        String body =
-                "<div><h3>Dear  " + reclamationDetails.getFirstname() + " " + reclamationDetails.getLastname() + " </h3>" +
-                        "<br>" +
-                        "<h4>Thank you for registering on our website. In order to complete the creation of your account, it is necessary to confirm your email address.</h4>" +
-                        "<h4>please <a href='" + url + "'>click here</a>.</h4>" +
-                        "<h4>If you need help, please contact the website administrator.</h4>" +
-                        "<br>" +
-                        "<h4>Admin</h4></div>";
-        Mail mail = new Mail(reclamationDetails.getEmail(), subject, body);
-        try {
-            emailService.sendMail(mail);
-            return reclamation;
-        } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Mail invalid", exception);
-        }
-    }
+       // Optional: You may return the saved reclamation if needed
+       return reclamation;
+   }
+
 
 
 
@@ -115,6 +109,7 @@ public List<Reclamation> getAllReclamation() {
         List<Reclamation> reclamationsResolues = reclamationRepository.findByStatutReclamation(StatutReclamation.RESOLUE);
         reclamationRepository.deleteAll(reclamationsResolues);
     }
+
     @Override
     public List<Reclamation> getAllReclamations() {
         return (List<Reclamation>) reclamationRepository.findAll();
@@ -162,7 +157,7 @@ public List<Reclamation> getAllReclamation() {
     }
     @Override
     public void deleteReclamationById(long idReclamation) {
-        reclamationRepository.findById(idReclamation);
+        reclamationRepository.deleteById(idReclamation);
     }
     @Override
     public Response editClaimState(Long idReclamation, String ClaimState) {
@@ -187,12 +182,31 @@ public List<Reclamation> getAllReclamation() {
         return new Response(404,"Claim not exist");
     }
     @Override
-    public Response retrieveClaim(Long idReclamation){
-       Reclamation claim = reclamationRepository.findById(idReclamation).orElse(null);
-        if(claim != null) {
-            return new Response(200,"Claims retrieved Successfully",claim);
+    public Response retrieveClaim(Long idReclamation) {
+        Reclamation claim = reclamationRepository.findById(idReclamation).orElse(null);
+        if (claim != null) {
+            // Assuming that user details are stored in the 'user' field of the Reclamation entity
+            String firstname = claim.getUser().getFirstname();
+            String lastname = claim.getUser().getLastname();
+            String email = claim.getUser().getEmail();
+
+            // Check if dateCreation, description, and statut are not null before using them
+            Date dateCreation = claim.getDateCreation();
+            String description = claim.getDescription();
+            StatutReclamation statutReclamation = claim.getStatutReclamation();
+
+            // Create a new ReclamationWithUserDetails object
+            ReclamationWithUserDetails userDetails = new ReclamationWithUserDetails(
+                    firstname, lastname, email, dateCreation, description, statutReclamation);
+
+            return new Response(200, "Claims retrieved Successfully", userDetails);
         }
-        return new Response(404,"Claim not exist");
+        return new Response(404, "Claim not exist");
+    }
+
+    @Override
+    public Page<Reclamation> getFilteredClaims(int sortCriteria, Pageable pageable) {
+        return reclamationRepository.findAllWithSorting(sortCriteria, pageable);
     }
 
 

@@ -1,13 +1,15 @@
 package com.esprit.backend.Services;
 
-import com.esprit.backend.DTO.Mail;
+import com.esprit.backend.auth.Mail;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
+
 public class EmailService implements IEmailService {
     private final JavaMailSender javaMailSender;
 
@@ -22,7 +24,7 @@ public class EmailService implements IEmailService {
 
         String htmlContent =  mail.getBody() ;
         helper.setText(htmlContent, true);
-        helper.setFrom("mahjoubioussema928@gmail.com");
+        helper.setFrom("haylemskr001@gmail.com");
         helper.setTo(mail.getTo());
         helper.setSubject(mail.getSubject());
 

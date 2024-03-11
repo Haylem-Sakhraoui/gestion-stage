@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -22,11 +25,13 @@ import java.util.List;
 public class ReclamationController {
     @Autowired
     ReclamationService serviceReclamation;
+
     private final ReclamationRepository reclamationRepository;
 
     @Autowired
     public ReclamationController(ReclamationRepository reclamationRepository) {
         this.reclamationRepository = reclamationRepository;
+
     }
    /* @PostMapping("/ajouterReclamationAvecUtilisateur/{userId}")
     public ResponseEntity<Reclamation> ajouterReclamationAvecUtilisateur(
@@ -35,27 +40,26 @@ public class ReclamationController {
         Reclamation newReclamation = serviceReclamation.ajouterReclamationAvecUtilisateur(reclamation, userId);
         return ResponseEntity.ok(newReclamation);
     }*/
-   @PutMapping("/modifierReclamation/{idReclamation}")
-   public ResponseEntity<Reclamation> modifierReclamation(
-           @PathVariable long idReclamation,
-           @RequestParam StatutReclamation newStatut,
-           @RequestParam String newDescription) {
-       Reclamation updatedReclamation = serviceReclamation.modifierReclamation(idReclamation, newStatut, newDescription);
-       return ResponseEntity.ok(updatedReclamation);
-   }
+        @PutMapping("/modifierReclamation/{idReclamation}")
+        public ResponseEntity<Reclamation> modifierReclamation (
+        @PathVariable long idReclamation,
+        @RequestParam StatutReclamation newStatut,
+        @RequestParam String newDescription){
+            Reclamation updatedReclamation = serviceReclamation.modifierReclamation(idReclamation, newStatut, newDescription);
+            return ResponseEntity.ok(updatedReclamation);
+        }
 
 
-
-    @GetMapping("/getReclamationsByStatut/{statut}")
-    public ResponseEntity<List<Reclamation>> getReclamationsByStatut(@PathVariable StatutReclamation statut) {
-        List<Reclamation> reclamations = serviceReclamation.getReclamationsByStatut(statut);
-        return ResponseEntity.ok(reclamations);
-    }
-    @DeleteMapping("/supprimerReclamationsResolues")
-    public ResponseEntity<Void> supprimerReclamationsResolues() {
-        serviceReclamation.supprimerReclamationsResolues();
-        return ResponseEntity.noContent().build();
-    }
+        @GetMapping("/getReclamationsByStatut/{statut}")
+        public ResponseEntity<List<Reclamation>> getReclamationsByStatut (@PathVariable StatutReclamation statut){
+            List<Reclamation> reclamations = serviceReclamation.getReclamationsByStatut(statut);
+            return ResponseEntity.ok(reclamations);
+        }
+        @DeleteMapping("/supprimerReclamationsResolues")
+        public ResponseEntity<Void> supprimerReclamationsResolues () {
+            serviceReclamation.supprimerReclamationsResolues();
+            return ResponseEntity.noContent().build();
+        }
 
    /* @PostMapping("/add")
     public ResponseEntity<String> addReclamation(@RequestBody ReclamationWithUserDetails reclamationDetails) {
@@ -77,22 +81,22 @@ public class ReclamationController {
             return new ResponseEntity<>("Failed to add reclamation", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }*/
-    @PostMapping("/addReclamation")
-    public ResponseEntity<Reclamation> addReclamation(@RequestBody ReclamationWithUserDetails reclamationDetails) {
-        Reclamation addedReclamation = serviceReclamation.addReclamation(reclamationDetails);
-        return new ResponseEntity<>(addedReclamation, HttpStatus.CREATED);
-    }
+        @PostMapping("/addReclamation")
+        public ResponseEntity<Reclamation> addReclamation (@RequestBody ReclamationWithUserDetails reclamationDetails){
+            Reclamation addedReclamation = serviceReclamation.addReclamation(reclamationDetails);
+            return new ResponseEntity<>(addedReclamation, HttpStatus.CREATED);
+        }
 
-    @GetMapping("/with-users")
-    public List<ReclamationWithUserDetails> getAllReclamationsWithUsers() {
-        return serviceReclamation.getAllReclamationsWithUsers();
-    }
+        @GetMapping("/with-users")
+        public List<ReclamationWithUserDetails> getAllReclamationsWithUsers () {
+            return serviceReclamation.getAllReclamationsWithUsers();
+        }
 
-    @DeleteMapping("/deleteRec/{idReclamation}")
-    public ResponseEntity<Void> deleteReclamation(@PathVariable long idReclamation) {
-        serviceReclamation.deleteReclamationById(idReclamation);
-        return ResponseEntity.noContent().build();
-    }
+        @DeleteMapping("/deleteRec/{idReclamation}")
+        public ResponseEntity<Void> deleteReclamation ( @PathVariable long idReclamation){
+            serviceReclamation.deleteReclamationById(idReclamation);
+            return ResponseEntity.noContent().build();
+        }
 /*
     @GetMapping("/percentCountStatut")
     public List<CountStatut> getPercentageGroupByStatut() {
@@ -100,15 +104,25 @@ public class ReclamationController {
     }
 */
 
-    @PutMapping("/editClaimState/{idReclamation}/{StatutReclamation}")
+        @PutMapping("/editClaimState/{idReclamation}/{StatutReclamation}")
 
-    public Response editClaimState(@PathVariable("idReclamation") Long idReclamation, @PathVariable("StatutReclamation") String newClaimState){
-        return serviceReclamation.editClaimState(idReclamation,newClaimState);
+        public Response editClaimState (@PathVariable("idReclamation") Long
+        idReclamation, @PathVariable("StatutReclamation") String newClaimState){
+            return serviceReclamation.editClaimState(idReclamation, newClaimState);
+        }
+
+        @GetMapping("/retrieveClaim/{idReclamation}")
+        public Response retrieveClaim (@PathVariable("idReclamation") Long idReclamation){
+            return serviceReclamation.retrieveClaim(idReclamation);
+        }
+
+
+    @GetMapping("/filteredClaims/{sortCriteria}/{page}")
+    public Page<Reclamation> getFilteredClaims(@PathVariable("sortCriteria") int sortCriteria, @PathVariable("page") int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return serviceReclamation.getFilteredClaims(sortCriteria, pageable);
     }
 
-    @GetMapping("/retrieveClaim/{idReclamation}")
-    public Response retrieveClaim(@PathVariable("idReclamation") Long idReclamation){
-        return serviceReclamation.retrieveClaim(idReclamation);
-    }
 
 }
+

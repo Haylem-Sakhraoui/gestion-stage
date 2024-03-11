@@ -1,5 +1,6 @@
 package com.esprit.backend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,7 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 
 import java.util.Collection;
+
 import java.util.Collections;
+
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +25,7 @@ import java.util.Set;
 @Builder
 public class User implements UserDetails {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstname;
     private String lastname;
@@ -30,13 +33,23 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
+    @OneToOne
+    private Token token;
+    @Enumerated(EnumType.STRING)
     private Role role;
-
+    private Boolean enabled = false;
 
     @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
     private Set<Reclamation> reclamation;
 
+
+
+
+
 /*
+=======
+>>>>>>> 282da086cf69489b764bb08939a501c01811c706
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -77,6 +90,5 @@ public Collection<? extends GrantedAuthority> getAuthorities() {
     public boolean isEnabled() {
         return true;
     }
-
 
 }

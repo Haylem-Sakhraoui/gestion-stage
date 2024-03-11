@@ -1,4 +1,4 @@
-package com.esprit.backend.DTO;
+package com.esprit.backend.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Mail {
     private String to;
-
     private String subject;
     private String body;
 }

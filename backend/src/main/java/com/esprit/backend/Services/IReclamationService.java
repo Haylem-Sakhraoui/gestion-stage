@@ -4,11 +4,14 @@ import com.esprit.backend.DTO.Response;
 import com.esprit.backend.Entity.ReclamationWithUserDetails;
 import com.esprit.backend.Entity.Reclamation;
 import com.esprit.backend.Entity.StatutReclamation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface IReclamationService {
    // Reclamation ajouterReclamation(Reclamation reclamation);
+
 
     //List<Reclamation> getAllReclamation();
 
@@ -80,4 +83,7 @@ public interface IReclamationService {
     Response editClaimState(Long claimId, String ClaimState);
 
     Response retrieveClaim(Long idReclamation);
+
+
+    Page<Reclamation> getFilteredClaims(int sortCriteria, Pageable pageable);
 }
