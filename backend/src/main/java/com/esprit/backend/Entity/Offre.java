@@ -19,7 +19,7 @@ public class Offre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    long IdStage;
+    long idStage;
 
     String TypeStage;
 

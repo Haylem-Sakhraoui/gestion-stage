@@ -27,18 +27,16 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 @EnableAspectJAutoProxy
 public class BackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BackendApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(BackendApplication.class, args);
+  }
 
-<<<<<<< HEAD
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**") // Spécifiez le chemin de votre API
-				.allowedOrigins("http://localhost:4200") // Autorisez les requêtes depuis ce domaine
-				.allowedMethods("GET", "POST", "PUT", "DELETE") // Autorisez les méthodes HTTP spécifiées
-				.allowCredentials(true); // Autorisez l'envoi des cookies
-	}
-=======
+
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**") // Spécifiez le chemin de votre API
+      .allowedOrigins("http://localhost:4200") // Autorisez les requêtes depuis ce domaine
+      .allowedMethods("GET", "POST", "PUT", "DELETE") // Autorisez les méthodes HTTP spécifiées
+      .allowCredentials(true); // Autorisez l'envoi des cook
 //	@Bean
 //	public JavaMailSender javaMailSender() {
 //		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -57,5 +55,6 @@ public class BackendApplication {
 //				.allowCredentials(true); // Autorisez l'envoi des cookies
 //	}
 
->>>>>>> 282da086cf69489b764bb08939a501c01811c706
+
+  }
 }

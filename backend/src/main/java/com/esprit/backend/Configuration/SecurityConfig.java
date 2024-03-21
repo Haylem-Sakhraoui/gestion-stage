@@ -52,13 +52,13 @@ public class SecurityConfig {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
-<<<<<<< HEAD
-                .requestMatchers("/api/v1/auth/**","/reclamation/**","/offre/**")
-=======
-                .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/forgetPassword/**","/user/resetPassword/**","/offre/** ")
-                .requestMatchers("/api/v1/auth/**","/reclamation/**")
 
->>>>>>> 282da086cf69489b764bb08939a501c01811c706
+
+
+                .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/forgetPassword/**","/user/resetPassword/**","/offre/** ")
+
+
+
 
                 .permitAll()
                 .anyRequest()
