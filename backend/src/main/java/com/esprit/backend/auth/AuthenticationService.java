@@ -8,13 +8,17 @@ import io.jsonwebtoken.io.IOException;
 import jakarta.persistence.Entity;
 import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +32,10 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
     public AuthenticationResponse register(RegisterRequest request) {
 
 //        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -56,8 +64,8 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticateRequest request) {
-    authenticationManager.authenticate(
+    public AuthResponse authenticate(AuthenticateRequest request) {
+    /*authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                     request.getEmail(),
                     request.getPassword()
@@ -68,7 +76,37 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(new HashMap<>(),user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
-                .build();
+                .build();*/
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+            final UserDetails userDetails = userDetailsService
+                    .loadUserByUsername(request.getEmail());
+
+
+            var user =userRepository.findByEmail(request.getEmail())
+                    .orElseThrow();
+            var jwtToken = jwtService.generateToken(new HashMap<>(),user);
+            return new AuthResponse(200,AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .build(), "login successfully");
+
+          /*  return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .build();*/
+        }catch (BadCredentialsException e) {
+            return new AuthResponse(404, "Invalid email or password");
+        }
+         catch (DisabledException d) {
+            return new AuthResponse(404, "Account disabled ! check you email to enabled it.");
+
+        }
+
+
     }
 
 

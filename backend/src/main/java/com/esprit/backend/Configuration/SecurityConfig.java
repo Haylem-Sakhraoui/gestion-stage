@@ -55,7 +55,12 @@ public class SecurityConfig {
 
 
 
-                .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/forgetPassword/**","/user/resetPassword/**","/offre/** ")
+
+
+
+                .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/**","/offre/** ","/user/forgetPassword/**","/user/resetPassword/**")
+
+
 
 
 

@@ -2,10 +2,7 @@ package com.esprit.backend.Controller;
 
 import com.esprit.backend.Entity.User;
 import com.esprit.backend.Services.UserService;
-import com.esprit.backend.auth.AuthenticationResponse;
-import com.esprit.backend.auth.ForgetPassword;
-import com.esprit.backend.auth.RegisterRequest;
-import com.esprit.backend.auth.ResetPasswordRequest;
+import com.esprit.backend.auth.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -68,16 +65,16 @@ public class UserController {
          userService.deleteUserByEmail(email);
     }
 
-    @PutMapping("/disableUser/{email}")
+    @PutMapping("/disableUser")
     @PreAuthorize("hasRole('ADMIN')")
-    public void disableUser(@PathVariable("email") String email){
-        userService.disableUser(email);
+    public void disableUser(@RequestBody abilityRequest request){
+        userService.disableUser(request);
     }
 
-    @PutMapping("/enableUser/{email}")
+    @PutMapping("/enableUser")
     @PreAuthorize("hasRole('ADMIN')")
-    public void enableUser(@PathVariable("email") String email) {
-        userService.enableUser(email);
+    public void enableUser(@RequestBody abilityRequest request) {
+        userService.enableUser(request);
     }
 
     @PostMapping("/forgetPassword")
