@@ -21,7 +21,7 @@ public class Offre {
     @Setter(AccessLevel.NONE)
     long idStage;
 
-    String TypeStage;
+    String typeStage;
 
     String Description;
     int    NbStagiaire;

@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("offre")
 public class OffreController {
 
@@ -36,7 +36,14 @@ public class OffreController {
   public Offre getstage(@RequestParam("idstage") long idstage) {
     return offreService.getStageById(idstage);
   }
-
+  @GetMapping("gettype")
+  public List<Offre> getOffres(@RequestParam(required = false) String  typeStage) {
+    if ( typeStage != null && ! typeStage.isEmpty()) {
+      return offreService.getOffresByTypeStage( typeStage);
+    } else {
+      return offreService.getAllStages();
+    }
+  }
   @DeleteMapping("delete/{idstage}")
   public void DeleteStage(@PathVariable("idstage") long idstage) {
     offreService.DeleteStage(idstage);

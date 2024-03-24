@@ -60,4 +60,9 @@ public class OffreService implements IOffreService{
       offreRepo.save(offre);
     }
   }
+
+  @Override
+  public List<Offre> getOffresByTypeStage(String typeStage) {
+    return offreRepo.findByTypeStageContainingIgnoreCase(typeStage);
+  }
 }

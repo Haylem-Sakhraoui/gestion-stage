@@ -10,6 +10,7 @@ public interface IOffreService {
     List<Offre> getAllStages();
     void DeleteStage(long idstage);
     Offre updateStage(Offre offre);
-  public void likeStage(long idstage);
-  public void dislikeStage(long idstage);
+  void likeStage(long idstage);
+  void dislikeStage(long idstage);
+  public List<Offre> getOffresByTypeStage(String typeStage);
 }
