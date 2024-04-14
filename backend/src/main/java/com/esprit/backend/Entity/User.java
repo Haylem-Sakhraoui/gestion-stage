@@ -33,10 +33,14 @@ public class User implements UserDetails {
     @JsonIgnore
     @OneToOne
     private Token token;
+
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean enabled = false;
-
+  @OneToOne( cascade = CascadeType.ALL, mappedBy = "user")
+  private Offre offre;
+  @OneToOne( cascade = CascadeType.ALL, mappedBy = "user")
+  private CvStage cvStage;
     @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
     private Set<Reclamation> reclamation;
 

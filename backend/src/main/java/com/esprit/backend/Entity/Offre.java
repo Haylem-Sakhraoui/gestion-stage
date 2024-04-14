@@ -1,9 +1,6 @@
 package com.esprit.backend.Entity;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import java.util.Set;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -25,8 +22,11 @@ public class Offre {
 
     String Description;
     int    NbStagiaire;
-    String Competence;
+
   private int likes;
   private int dislikes;
-
+  @ElementCollection
+  private Set<String> Competence;
+  @OneToOne
+  private User user;
 }

@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@RequestMapping("stage")
+@RequestMapping("cv")
+@CrossOrigin(origins = "http://localhost:4200")
 public class CvStageController {
   private CvService cvService;
 
@@ -47,16 +49,33 @@ public class CvStageController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<byte[]> downloadSubmission(@PathVariable Long id) {
+  public ResponseEntity<CvStage> getCvById(@PathVariable Long id) {
     CvStage cvStage = cvService.getCvById(id);
     if (cvStage != null) {
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.APPLICATION_PDF);
-      headers.setContentDispositionFormData("filename", "cv.pdf");
-      headers.setContentLength(cvStage.getCvFile().length);
-      return new ResponseEntity<>(cvStage.getCvFile(), headers, HttpStatus.OK);
+      return ResponseEntity.ok(cvStage);
     } else {
       return ResponseEntity.notFound().build();
     }
   }
-}
+  @GetMapping("/cv/{id}/pdf")
+  public ResponseEntity<byte[]> getPdfById(@PathVariable Long id) {
+    CvStage cvStage = cvService.getCvById(id);
+    if (cvStage != null && cvStage.getCvFile() != null) {
+      byte[] pdfContent = cvStage.getCvFile();
+      return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_PDF)
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cv_" + id + ".pdf")
+        .body(pdfContent);
+    } else {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  @GetMapping("/cvs")
+  public ResponseEntity<List<CvStage>> getAllCVs() {
+    List<CvStage> cvs = cvService.getAllCVs();
+    return ResponseEntity.ok(cvs);
+  }
+  }
+
+

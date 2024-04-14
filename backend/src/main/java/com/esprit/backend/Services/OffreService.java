@@ -8,7 +8,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
@@ -65,4 +67,21 @@ public class OffreService implements IOffreService{
   public List<Offre> getOffresByTypeStage(String typeStage) {
     return offreRepo.findByTypeStageContainingIgnoreCase(typeStage);
   }
+  public List<Offre> matchCvToOffres(Set<String> cvSkills) {
+    Iterable<Offre> allOffresIterable = offreRepo.findAll();
+    List<Offre> allOffres = StreamSupport.stream(allOffresIterable.spliterator(), false)
+      .collect(Collectors.toList());
+    List<Offre> matchedOffres = new ArrayList<>();
+
+    for (Offre offre : allOffres) {
+      Set<String> intersection = new HashSet<>(offre.getCompetence());
+      intersection.retainAll(cvSkills);
+
+      if (!intersection.isEmpty()) {
+        matchedOffres.add(offre);
+      }
+    }
+    return matchedOffres;
+  }
 }
+

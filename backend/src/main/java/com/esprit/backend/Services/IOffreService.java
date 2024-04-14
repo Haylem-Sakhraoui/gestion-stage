@@ -3,6 +3,7 @@ package com.esprit.backend.Services;
 import com.esprit.backend.Entity.Offre;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IOffreService {
     Offre AddStage(Offre offre);
@@ -13,4 +14,5 @@ public interface IOffreService {
   void likeStage(long idstage);
   void dislikeStage(long idstage);
   public List<Offre> getOffresByTypeStage(String typeStage);
+  public List<Offre> matchCvToOffres(Set<String> cvSkills);
 }

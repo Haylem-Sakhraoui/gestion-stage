@@ -1,15 +1,19 @@
 package com.esprit.backend.Controller;
 
+import com.esprit.backend.Entity.CvStage;
 import com.esprit.backend.Entity.Offre;
+import com.esprit.backend.Services.CvService;
 import com.esprit.backend.Services.IOffreService;
 import io.swagger.annotations.Tag;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -18,7 +22,7 @@ import java.util.List;
 @RequestMapping("offre")
 public class OffreController {
 
-
+  CvService cvService;
   IOffreService offreService;
 
   @PostMapping("add")
@@ -64,4 +68,17 @@ public class OffreController {
   public void dislikeStage(@PathVariable("idstage") long idstage) {
     offreService.dislikeStage(idstage);
   }
+  @GetMapping("/match/{cvId}")
+  public ResponseEntity<List<Offre>> matchCvToOffres(@PathVariable Long cvId) {
+    CvStage cvStage = cvService.getCvById(cvId);
+    if (cvStage == null) {
+      return ResponseEntity.notFound().build();
+    }
+    Set<String> cvSkills = cvStage.getSkills();
+    List<Offre> matchedOffres = offreService.matchCvToOffres(cvSkills);
+    return ResponseEntity.ok(matchedOffres);
+  }
 }
+
+
+
