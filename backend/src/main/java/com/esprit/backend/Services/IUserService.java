@@ -4,6 +4,7 @@ import com.esprit.backend.Entity.User;
 import com.esprit.backend.auth.AuthenticationResponse;
 import com.esprit.backend.auth.RegisterRequest;
 import com.esprit.backend.auth.ResetPasswordRequest;
+import com.esprit.backend.auth.abilityRequest;
 import jakarta.mail.MessagingException;
 import org.springframework.security.core.userdetails.UserDetails;
 import springfox.documentation.service.Response;
@@ -32,10 +33,9 @@ public interface IUserService {
     Optional<User> retrieveUserByEmail(String email);
 
 
-    void disableUser(String email);
+    void disableUser(abilityRequest request);
 
-
-    void enableUser(String email);
+    void enableUser(abilityRequest request);
 
     void resetPassword(ResetPasswordRequest request);
 

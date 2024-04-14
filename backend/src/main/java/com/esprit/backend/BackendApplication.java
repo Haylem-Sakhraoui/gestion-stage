@@ -25,6 +25,8 @@ import java.util.Arrays;
 		"com.esprit.backend.Repository",
 		"com.esprit.backend.auth",
 		"com.esprit.backend.Configuration"
+
+
 })
 @EnableJpaRepositories(basePackages = {"com.esprit.backend.Repository"})
 @EntityScan(basePackages = {"com.esprit.backend.Entity"})

@@ -1,11 +1,16 @@
 package com.esprit.backend.Services;
 
+import com.esprit.backend.DTO.AddReclamationRequest;
 import com.esprit.backend.DTO.Response;
 import com.esprit.backend.Entity.ReclamationWithUserDetails;
 import com.esprit.backend.Entity.Reclamation;
 import com.esprit.backend.Entity.StatutReclamation;
+import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -66,7 +71,7 @@ public interface IReclamationService {
          reclamationRepository.save(reclamation);
      }
      */
-    Reclamation addReclamation(ReclamationWithUserDetails reclamationDetails);
+    Reclamation addReclamation(ReclamationWithUserDetails reclamationDetails) throws MessagingException;
 
     List<Reclamation> getReclamationsByStatut(StatutReclamation statut);
 
@@ -86,4 +91,53 @@ public interface IReclamationService {
 
 
     Page<Reclamation> getFilteredClaims(int sortCriteria, Pageable pageable);
+
+
+    /*
+        @Override
+        public Response addClaimStudent(AddReclamationRequest request) {
+            try {
+                Reclamation claim = new Reclamation();
+                claim.setDescription(request.getDescription());
+
+                claim.setDateCreation(new Date());
+                claim.setStatutReclamation(StatutReclamation.EN_ATTENTE);
+                User admin = (User) userRepository.findById(request.getUser()).orElse(null);
+                claim.setUser(admin);
+                reclamationRepository.save(claim);
+                return new Response(200,"Claim added successfully");
+            }catch (Exception e){
+                return new Response(400,"Something went wrong");
+            }
+        }
+
+
+    */
+    /*
+        @Override
+        public ResponseEntity<?> addClaim(@RequestBody Reclamation reclamation) {
+            // Extract current user from token
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User) authentication.getPrincipal();
+
+            // Create a new Reclamation object
+            Reclamation newReclamation = new Reclamation();
+
+            // Set user and other details
+            newReclamation.setUser(currentUser);
+            newReclamation.setDescription(reclamation.getDescription());
+            newReclamation.setStatutReclamation(StatutReclamation.EN_ATTENTE);
+            newReclamation.setDateCreation(new Date());
+
+            // Save the reclamation
+            reclamationRepository.save(newReclamation);
+
+            return ResponseEntity.ok("Reclamation added successfully.");
+        }
+    */
+    Response addClaim(AddReclamationRequest request);
+
+    List<ReclamationWithUserDetails> getRecByStatut(StatutReclamation statutReclamation);
+
+    List<ReclamationWithUserDetails> getReclamationsByUserFullName(String firstname, String lastname);
 }

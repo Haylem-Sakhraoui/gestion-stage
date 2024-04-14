@@ -5,6 +5,5 @@ import jakarta.mail.MessagingException;
 
 public interface IEmailService {
 
-
     void sendMail(Mail mail) throws MessagingException;
 }
