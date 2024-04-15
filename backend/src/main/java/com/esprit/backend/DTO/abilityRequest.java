@@ -1,4 +1,4 @@
-package com.esprit.backend.auth;
+package com.esprit.backend.DTO;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class abilityRequest {
-        private String email;
+    private String email;
 
 }
