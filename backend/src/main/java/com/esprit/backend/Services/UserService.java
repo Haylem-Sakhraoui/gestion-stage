@@ -35,7 +35,7 @@ public class UserService implements IUserService {
     private final String clientUrl = "http://localhost:4200";
 
     @Override
-    public AuthenticationResponse AdminAddUser(RegisterRequest request) {
+    public AuthenticationResponse AdminAddUser(RegisterRequest request) throws MessagingException {
         // Check if the user already exists
         if (userAlreadyExist(request.getEmail())) {
             throw new UnauthorizedUserException("User with email " + request.getEmail() + " already exists.");
@@ -59,7 +59,7 @@ public class UserService implements IUserService {
 
     }
     @Override
-    public AuthenticationResponse ServiceStageAddUser(RegisterRequest request) {
+    public AuthenticationResponse ServiceStageAddUser(RegisterRequest request) throws MessagingException {
 
         if (userAlreadyExist(request.getEmail())) {
             throw new UnauthorizedUserException("User with email " + request.getEmail() + " already exists.");
@@ -75,11 +75,23 @@ public class UserService implements IUserService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
+                .enabled(true)
                 .build();
 
         userRepository.save(user);
 
         var jwtToken = jwtService.generateToken(new HashMap<>(),user);
+
+        // Send an email to the user with the password
+        String subject = "Welcome to Our Platform";
+        String body = "Dear " + user.getFirstname() + ",\n\n"
+                + "Welcome to our platform! Your account has been successfully created.\n\n"
+                + "Your temporary password is: " + request.getPassword() + "\n\n"
+                + "For security reasons, we recommend changing your password after logging in.\n\n"
+                + "Thank you for joining us!";
+        Mail mail = new Mail(user.getEmail(), subject, body);
+        emailService.sendMail(mail);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();

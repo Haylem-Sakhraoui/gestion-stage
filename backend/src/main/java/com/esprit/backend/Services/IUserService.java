@@ -4,18 +4,18 @@ import com.esprit.backend.Entity.User;
 import com.esprit.backend.auth.AuthenticationResponse;
 import com.esprit.backend.auth.RegisterRequest;
 import com.esprit.backend.auth.ResetPasswordRequest;
+import com.esprit.backend.DTO.abilityRequest;
 import jakarta.mail.MessagingException;
-import org.springframework.security.core.userdetails.UserDetails;
-import springfox.documentation.service.Response;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
 
-    AuthenticationResponse AdminAddUser(RegisterRequest request);
 
-    AuthenticationResponse ServiceStageAddUser(RegisterRequest request);
+    AuthenticationResponse AdminAddUser(RegisterRequest request) throws MessagingException;
+
+    AuthenticationResponse ServiceStageAddUser(RegisterRequest request) throws MessagingException;
 
     List<User> retrieveAllUsers();
 
@@ -31,9 +31,7 @@ public interface IUserService {
 
     Optional<User> retrieveUserByEmail(String email);
 
-
     void disableUser(String email);
-
 
     void enableUser(String email);
 
