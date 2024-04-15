@@ -52,19 +52,12 @@ public class SecurityConfig {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
-<<<<<<< HEAD
 
                 .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/**","/offre/** ","/user/forgetPassword/**","/user/resetPassword/**")
-=======
+                .permitAll()
                 .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/forgetPassword/**","/user/resetPassword/**","/offre/** ")
                 .permitAll()
                 .requestMatchers("/api/v1/auth/**","/reclamation/**")
-<<<<<<< HEAD
-=======
-
-
->>>>>>> a045786f24f7f4bfb9927e35edda1857e9fd5f17
->>>>>>> bf5fde7b7ab894ff8eac5dcd09b812176e26b9be
                 .permitAll()
                 .anyRequest()
                 .authenticated()

@@ -1,10 +1,10 @@
 package com.esprit.backend.Services;
 
+import com.esprit.backend.DTO.abilityRequest;
 import com.esprit.backend.Entity.User;
 import com.esprit.backend.auth.AuthenticationResponse;
 import com.esprit.backend.auth.RegisterRequest;
 import com.esprit.backend.auth.ResetPasswordRequest;
-import com.esprit.backend.auth.abilityRequest;
 import jakarta.mail.MessagingException;
 
 import java.util.List;
@@ -28,6 +28,7 @@ public interface IUserService {
     Optional<User> getCurrentUser(String token);
 
     Optional<User> retrieveUserByEmail(String email);
+
 
     void disableUser(abilityRequest request);
 
