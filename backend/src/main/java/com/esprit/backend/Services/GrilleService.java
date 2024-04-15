@@ -4,25 +4,77 @@ package com.esprit.backend.Services;
 import com.esprit.backend.Entity.Grille;
 import com.esprit.backend.Repository.GrilleRepository;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Slf4j
 @AllArgsConstructor
-public class GrilleService implements IGrilleService {
-    GrilleRepository grilleRepository;
+public class GrilleService {
+    private final GrilleRepository grilleRepository;
 
-    @Override
     public Grille addGrille(Grille grille) {
         return grilleRepository.save(grille);
     }
 
-    @Override
     public List<Grille> getAllGrilles() {
         return grilleRepository.findAll();
     }
 
+    public Grille getGrilleById(Long grilleId) {
+        return grilleRepository.findById(grilleId).orElse(null);
+    }
+
+    public double calculateNoteForGrille(Grille grille) {
+        double noteTotal = 0;
+        int nombreTaches = 0;
+
+        if (grille != null) {
+            if (grille.getTacheType() != null && grille.getSatisfactionType() != null) {
+                nombreTaches++;
+                switch (grille.getSatisfactionType()) {
+                    case EXCELENT:
+                        noteTotal += 20;
+                        break;
+                    case Tres_Bon:
+                        noteTotal += 17;
+                        break;
+                    case Satisfaisant:
+                        noteTotal += 14;
+                        break;
+                    case Insatisfaisant:
+                        noteTotal += 10;
+                        break;
+                }
+            }
+        }
+
+        double noteMoyenne = (nombreTaches != 0) ? noteTotal / nombreTaches : 0;
+
+        return noteMoyenne;
+    }
+
+    // Méthode pour calculer la note finale
+    public void calculateFinalNote(Long grilleId) {
+        Grille grille = grilleRepository.findById(grilleId).orElse(null);
+        if (grille != null) {
+            double noteFinale = calculateNoteForGrille(grille);
+            grille.setNoteFinale(noteFinale);
+            grilleRepository.save(grille);
+        }
+    }
+    public double calculateGlobalNote() {
+        List<Grille> grilles = grilleRepository.findAll();
+        double totalNotes = 0;
+        int totalTaches = 0;
+
+        for (Grille grille : grilles) {
+            double note = calculateNoteForGrille(grille);
+            totalNotes += note;
+            totalTaches++;
+        }
+
+        double globalNote = (totalTaches != 0) ? totalNotes / totalTaches : 0;
+        return globalNote;
+    }
 }

@@ -2,8 +2,9 @@ package com.esprit.backend.Services;
 
 
 import com.esprit.backend.Entity.InternshipAgreement;
-import com.esprit.backend.Entity.ValidationType;
+import com.esprit.backend.Entity.User;
 import com.esprit.backend.Repository.AgreementRepository;
+import com.esprit.backend.Repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.List;
 public class AgreementService implements IAgreementService {
     @Autowired
     AgreementRepository agreementRepository;
+    UserRepository  userRepository;
 
 
     @Override
@@ -31,8 +33,10 @@ public class AgreementService implements IAgreementService {
 
 
     @Override
-    public List<InternshipAgreement> getAgreementsByValidationType(ValidationType validationType) {
-        return agreementRepository.findByValidationType(validationType);
+    public List<InternshipAgreement> getAgreementsByUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        return agreementRepository.findByUserId(user.getId());
+
 
 
     }}

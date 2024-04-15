@@ -43,4 +43,6 @@ public class InternshipAgreement implements Serializable {
     private Long internshipDuration;
     @Enumerated(EnumType.STRING)
     private ValidationType validationType;
+    @OneToOne()
+    private User user;
 }

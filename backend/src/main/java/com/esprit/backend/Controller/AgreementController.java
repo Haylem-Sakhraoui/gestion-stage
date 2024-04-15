@@ -2,6 +2,7 @@ package com.esprit.backend.Controller;
 
 
 import com.esprit.backend.Entity.InternshipAgreement;
+import com.esprit.backend.Entity.ValidationType;
 import com.esprit.backend.Services.AgreementService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class AgreementController {
     }
 
     @GetMapping("/validationType")
-    public List<String> getValidationTypes() {
-        List<InternshipAgreement> agreements = agreementService.getAllAgreements();
+    public List<String> getValidationTypesByUser(Long id) {
+        List<InternshipAgreement> agreements = agreementService.getAgreementsByUser(id);
         List<String> validationTypes = agreements.stream()
                 .filter(agreement -> agreement.getValidationType() != null) // Filtrer les accords avec un validationType non nul
                 .map(agreement -> agreement.getValidationType().name())

@@ -1,12 +1,10 @@
 package com.esprit.backend.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @AllArgsConstructor
@@ -19,7 +17,10 @@ public class InternshipSubmission implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String report;
+
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] pdfFile;
 
-}
+    private String report;
+
+    private double plagiarismScore;}

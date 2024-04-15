@@ -28,7 +28,9 @@ public class User implements UserDetails {
     private String lastname;
     private String studentClass;
     private String email;
+
     private String password;
+
     @Enumerated(EnumType.STRING)
     @JsonIgnore
     @OneToOne
@@ -39,7 +41,8 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
     private Set<Reclamation> reclamation;
-
+    @OneToOne(mappedBy="user")
+    private InternshipAgreement internshipAgreement;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

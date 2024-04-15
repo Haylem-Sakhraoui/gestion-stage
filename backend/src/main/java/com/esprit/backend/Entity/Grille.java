@@ -20,4 +20,7 @@ public class Grille implements Serializable {
   @Enumerated(EnumType.STRING)
   private SatisfactionType satisfactionType;
 
+
+  private Double noteFinale;
+
 }
