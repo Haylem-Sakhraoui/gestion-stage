@@ -4,15 +4,13 @@ import com.esprit.backend.Entity.User;
 import com.esprit.backend.auth.AuthenticationResponse;
 import com.esprit.backend.auth.RegisterRequest;
 import com.esprit.backend.auth.ResetPasswordRequest;
-import com.esprit.backend.DTO.abilityRequest;
+import com.esprit.backend.auth.abilityRequest;
 import jakarta.mail.MessagingException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
-
-
     AuthenticationResponse AdminAddUser(RegisterRequest request) throws MessagingException;
 
     AuthenticationResponse ServiceStageAddUser(RegisterRequest request) throws MessagingException;
@@ -31,9 +29,9 @@ public interface IUserService {
 
     Optional<User> retrieveUserByEmail(String email);
 
-    void disableUser(String email);
+    void disableUser(abilityRequest request);
 
-    void enableUser(String email);
+    void enableUser(abilityRequest request);
 
     void resetPassword(ResetPasswordRequest request);
 

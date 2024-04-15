@@ -82,13 +82,17 @@ public class UserController {
     @PutMapping("/disableUser")
     @PreAuthorize("hasRole('ADMIN')")
     public void disableUser(@RequestBody abilityRequest request){
+
         userService.disableUser(String.valueOf(request));
+
+        userService.disableUser(request);
     }
 
     @PutMapping("/enableUser")
     @PreAuthorize("hasRole('ADMIN')")
     public void enableUser(@RequestBody abilityRequest request) {
         userService.enableUser(String.valueOf(request));
+        userService.enableUser(request);
     }
 
     @PostMapping("/forgetPassword")

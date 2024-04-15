@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2024-03-02T01:31:43.441+01:00  INFO 14428 --- [main] com.esprit.backend.BackendApplication    : Starting BackendApplication using Java 17.0.8 with PID 14428 (C:\Users\HAYLEM SAKHRAOUI\Desktop\ServiceStage4SAE3\backend\target\classes started by HAYLEM SAKHRAOUI in C:\Users\HAYLEM SAKHRAOUI\Desktop\ServiceStage4SAE3)
 2024-03-02T01:31:43.589+01:00  INFO 14428 --- [main] com.esprit.backend.BackendApplication    : No active profile set, falling back to 1 default profile: "default"
 2024-03-02T01:31:45.139+01:00  INFO 14428 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
@@ -2861,3 +2862,20 @@ Caused by: java.net.ConnectException: Connection refused: no further information
 2024-04-15T19:28:47.041+01:00  WARN 18708 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 2024-04-15T19:28:47.929+01:00  WARN 18708 --- [main] o.s.b.a.f.FreeMarkerAutoConfiguration    : Cannot find template location(s): [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
 2024-04-15T19:28:48.002+01:00  INFO 18708 --- [main] com.esprit.backend.BackendApplication    : Started BackendApplication in 5.03 seconds (process running for 5.569)
+=======
+2024-03-11T14:01:17.385+01:00  INFO 19980 --- [main] com.esprit.backend.BackendApplication    : Starting BackendApplication using Java 17.0.8 with PID 19980 (C:\Users\HAYLEM SAKHRAOUI\Desktop\ServiceStage4SAE3\backend\target\classes started by HAYLEM SAKHRAOUI in C:\Users\HAYLEM SAKHRAOUI\Desktop\ServiceStage4SAE3)
+2024-03-11T14:01:17.512+01:00  INFO 19980 --- [main] com.esprit.backend.BackendApplication    : No active profile set, falling back to 1 default profile: "default"
+2024-03-11T14:01:19.188+01:00  INFO 19980 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-03-11T14:01:19.188+01:00  INFO 19980 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.18]
+2024-03-11T14:01:19.268+01:00  INFO 19980 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/stage]  : Initializing Spring embedded WebApplicationContext
+2024-03-11T14:01:19.578+01:00  INFO 19980 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-03-11T14:01:19.662+01:00  INFO 19980 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-03-11T14:01:19.705+01:00  INFO 19980 --- [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-03-11T14:01:20.252+01:00  WARN 19980 --- [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-03-11T14:01:20.252+01:00  WARN 19980 --- [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-03-11T14:01:21.223+01:00  INFO 19980 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-03-11T14:01:21.941+01:00  WARN 19980 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-03-11T14:01:23.539+01:00  WARN 19980 --- [main] o.s.b.a.f.FreeMarkerAutoConfiguration    : Cannot find template location(s): [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2024-03-11T14:01:23.638+01:00  INFO 19980 --- [main] com.esprit.backend.BackendApplication    : Started BackendApplication in 6.714 seconds (process running for 7.648)
+2024-03-11T14:05:32.027+01:00  INFO 19980 --- [http-nio-8075-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/stage]  : Initializing Spring DispatcherServlet 'dispatcherServlet'
+>>>>>>> bf5fde7b7ab894ff8eac5dcd09b812176e26b9be
