@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.esprit.backend.Entity.Permission.*;
+
+
+
 @RequiredArgsConstructor
 public enum Role {
     ADMIN, SERVICESTAGE,STUDENT, SUPERVISOR;

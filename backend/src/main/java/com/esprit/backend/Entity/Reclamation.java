@@ -11,6 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
+@Builder
 public class Reclamation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +22,8 @@ public class Reclamation {
     @Enumerated(EnumType.STRING)
     private StatutReclamation statutReclamation;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)  // Ensure FetchType.EAGER here
+    @JoinColumn(name = "user_id")  // Adjust the join column name based on your entity
     @JsonIgnore
     private User user;
 }
