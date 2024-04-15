@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 2024-02-21T17:15:51.615+01:00  INFO 13484 --- [main] com.esprit.backend.BackendApplication    : Starting BackendApplication using Java 17.0.8 with PID 13484 (C:\Users\HAYLEM SAKHRAOUI\Desktop\ServiceStage4SAE3\backend\target\classes started by HAYLEM SAKHRAOUI in C:\Users\HAYLEM SAKHRAOUI\Desktop\ServiceStage4SAE3)
 2024-02-21T17:15:51.624+01:00  INFO 13484 --- [main] com.esprit.backend.BackendApplication    : No active profile set, falling back to 1 default profile: "default"
 2024-02-21T17:15:53.346+01:00  INFO 13484 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
@@ -1564,8 +1563,7 @@ org.hibernate.TransientPropertyValueException: object references an unsaved tran
 2024-03-02T02:16:01.005+01:00  WARN 17624 --- [main] o.s.b.a.f.FreeMarkerAutoConfiguration    : Cannot find template location(s): [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
 2024-03-02T02:16:01.075+01:00  INFO 17624 --- [main] com.esprit.backend.BackendApplication    : Started BackendApplication in 4.66 seconds (process running for 5.276)
 2024-03-02T02:16:04.828+01:00  INFO 17624 --- [http-nio-8075-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/stage]  : Initializing Spring DispatcherServlet 'dispatcherServlet'
->>>>>>> 282da086cf69489b764bb08939a501c01811c706
-=======
+
 2024-03-11T14:01:17.385+01:00  INFO 19980 --- [main] com.esprit.backend.BackendApplication    : Starting BackendApplication using Java 17.0.8 with PID 19980 (C:\Users\HAYLEM SAKHRAOUI\Desktop\ServiceStage4SAE3\backend\target\classes started by HAYLEM SAKHRAOUI in C:\Users\HAYLEM SAKHRAOUI\Desktop\ServiceStage4SAE3)
 2024-03-11T14:01:17.512+01:00  INFO 19980 --- [main] com.esprit.backend.BackendApplication    : No active profile set, falling back to 1 default profile: "default"
 2024-03-11T14:01:19.188+01:00  INFO 19980 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
@@ -1581,4 +1579,19 @@ org.hibernate.TransientPropertyValueException: object references an unsaved tran
 2024-03-11T14:01:23.539+01:00  WARN 19980 --- [main] o.s.b.a.f.FreeMarkerAutoConfiguration    : Cannot find template location(s): [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
 2024-03-11T14:01:23.638+01:00  INFO 19980 --- [main] com.esprit.backend.BackendApplication    : Started BackendApplication in 6.714 seconds (process running for 7.648)
 2024-03-11T14:05:32.027+01:00  INFO 19980 --- [http-nio-8075-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/stage]  : Initializing Spring DispatcherServlet 'dispatcherServlet'
->>>>>>> bf5fde7b7ab894ff8eac5dcd09b812176e26b9be
+
+2024-04-15T20:33:41.963+01:00  INFO 16052 --- [main] com.esprit.backend.BackendApplication    : Starting BackendApplication using Java 17.0.8 with PID 16052 (C:\Users\HAYLEM SAKHRAOUI\Desktop\ServiceStage4SAE3\backend\target\classes started by HAYLEM SAKHRAOUI in C:\Users\HAYLEM SAKHRAOUI\Desktop\ServiceStage4SAE3)
+2024-04-15T20:33:41.965+01:00  INFO 16052 --- [main] com.esprit.backend.BackendApplication    : No active profile set, falling back to 1 default profile: "default"
+2024-04-15T20:33:43.583+01:00  INFO 16052 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-04-15T20:33:43.583+01:00  INFO 16052 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.18]
+2024-04-15T20:33:43.661+01:00  INFO 16052 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/stage]  : Initializing Spring embedded WebApplicationContext
+2024-04-15T20:33:43.790+01:00  INFO 16052 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-04-15T20:33:43.868+01:00  INFO 16052 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-04-15T20:33:43.919+01:00  INFO 16052 --- [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-04-15T20:33:44.749+01:00  WARN 16052 --- [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-04-15T20:33:44.750+01:00  WARN 16052 --- [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-04-15T20:33:45.772+01:00  INFO 16052 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-04-15T20:33:46.844+01:00  WARN 16052 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-04-15T20:33:47.479+01:00  INFO 16052 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@37736bf1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2a7c82e, org.springframework.security.web.context.SecurityContextHolderFilter@5cb2a1ea, org.springframework.security.web.header.HeaderWriterFilter@465b16bb, org.springframework.security.web.authentication.logout.LogoutFilter@5de25642, com.esprit.backend.Configuration.JwtAuthenticationFilter@1ccce165, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@553c74cc, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@58435220, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@22128b73, org.springframework.security.web.session.SessionManagementFilter@59bb8f80, org.springframework.security.web.access.ExceptionTranslationFilter@403ca4ec, org.springframework.security.web.access.intercept.AuthorizationFilter@3d63becf]
+2024-04-15T20:33:48.067+01:00  WARN 16052 --- [main] o.s.b.a.f.FreeMarkerAutoConfiguration    : Cannot find template location(s): [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2024-04-15T20:33:48.151+01:00  INFO 16052 --- [main] com.esprit.backend.BackendApplication    : Started BackendApplication in 6.634 seconds (process running for 7.773)

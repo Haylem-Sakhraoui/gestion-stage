@@ -1,4 +1,4 @@
-package com.esprit.backend.auth;
+package com.esprit.backend.DTO;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

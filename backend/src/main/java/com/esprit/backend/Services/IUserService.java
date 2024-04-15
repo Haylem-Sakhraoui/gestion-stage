@@ -4,10 +4,8 @@ import com.esprit.backend.Entity.User;
 import com.esprit.backend.auth.AuthenticationResponse;
 import com.esprit.backend.auth.RegisterRequest;
 import com.esprit.backend.auth.ResetPasswordRequest;
-import com.esprit.backend.auth.abilityRequest;
+import com.esprit.backend.DTO.abilityRequest;
 import jakarta.mail.MessagingException;
-import org.springframework.security.core.userdetails.UserDetails;
-import springfox.documentation.service.Response;
 
 import java.util.List;
 import java.util.Optional;
