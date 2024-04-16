@@ -2,12 +2,12 @@ package com.esprit.backend.Controller;
 
 import com.esprit.backend.Entity.CvStage;
 import com.esprit.backend.Entity.Offre;
+import com.esprit.backend.Entity.User;
 import com.esprit.backend.Services.CvService;
 import com.esprit.backend.Services.IOffreService;
-import io.swagger.annotations.Tag;
-import lombok.AccessLevel;
+
 import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,14 +60,15 @@ public class OffreController {
   }
 
   @PostMapping("{idstage}/like")
-  public void likeStage(@PathVariable("idstage") long idstage) {
-    offreService.likeStage(idstage);
+  public void likeStage(@PathVariable("idstage") long idstage, @RequestBody User user) {
+    offreService.likeStage(idstage, user);
   }
 
   @PostMapping("{idstage}/dislike")
-  public void dislikeStage(@PathVariable("idstage") long idstage) {
-    offreService.dislikeStage(idstage);
+  public void dislikeStage(@PathVariable("idstage") long idstage, @RequestBody User user) {
+    offreService.dislikeStage(idstage, user);
   }
+
   @GetMapping("/match/{cvId}")
   public ResponseEntity<List<Offre>> matchCvToOffres(@PathVariable Long cvId) {
     CvStage cvStage = cvService.getCvById(cvId);

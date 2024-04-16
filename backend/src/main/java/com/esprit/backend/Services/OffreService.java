@@ -1,6 +1,7 @@
 package com.esprit.backend.Services;
 
 import com.esprit.backend.Entity.Offre;
+import com.esprit.backend.Entity.User;
 import com.esprit.backend.Repository.OffreRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,10 +19,20 @@ import java.util.stream.StreamSupport;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OffreService implements IOffreService{
     OffreRepository offreRepo;
-    @Override
+  NotificationService notificationService;
+  @Override
     public Offre AddStage(Offre offre) {
-        return offreRepo.save(offre);
+
+      Offre savedOffre = offreRepo.save(offre);
+      // Send notification to the user associated with this offer
+      if (savedOffre.getUser() != null) {
+        notificationService.notifyUser(savedOffre.getUser().getUsername(),
+          "New stage added: " + savedOffre.getTypeStage() + " - Check it out!");
+      }
+      return savedOffre;
     }
+
+
 
     @Override
     public Offre getStageById(long idstage) {
@@ -44,24 +55,23 @@ public class OffreService implements IOffreService{
         return offreRepo.save(offre);
     }
   @Override
-  public void likeStage(long idstage) {
-   Offre offre = offreRepo.findById(idstage).orElse(null);
-    if (offre!= null) {
-      offre.setLikes(offre.getLikes() + 1);
+  public void likeStage(long idstage, User user) {
+    Offre offre = offreRepo.findById(idstage).orElse(null);
+    if (offre != null && !offre.getLikedBy().contains(user)) {
+      offre.getLikedBy().add(user);
       offreRepo.save(offre);
     }
-
-
   }
 
   @Override
-  public void dislikeStage(long idstage) {
+  public void dislikeStage(long idstage, User user) {
     Offre offre = offreRepo.findById(idstage).orElse(null);
-    if (offre != null) {
-      offre.setDislikes(offre.getDislikes() + 1);
+    if (offre != null && !offre.getDislikedBy().contains(user)) {
+      offre.getDislikedBy().add(user);
       offreRepo.save(offre);
     }
   }
+
 
   @Override
   public List<Offre> getOffresByTypeStage(String typeStage) {

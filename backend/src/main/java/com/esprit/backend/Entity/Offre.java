@@ -1,4 +1,5 @@
 package com.esprit.backend.Entity;
+import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,4 +30,13 @@ public class Offre {
   private Set<String> Competence;
   @OneToOne
   private User user;
+
+  public String getTypeStage() {
+    return typeStage;
+  }
+  @ManyToMany
+  private Set<User> likedBy = new HashSet<>();
+
+  @ManyToMany
+  private Set<User> dislikedBy = new HashSet<>();
 }
