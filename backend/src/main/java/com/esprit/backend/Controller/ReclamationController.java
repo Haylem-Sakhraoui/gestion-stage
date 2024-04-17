@@ -69,12 +69,13 @@ public class ReclamationController {
         }
     }*/
         @PostMapping("/addReclamation")
-      //  @PreAuthorize("hasRole('SERVICESTAGE') or hasRole('STUDENT') or hasRole('ADMIN')")
+        @PreAuthorize("hasRole('SERVICESTAGE')  or hasRole('ADMIN')")
         public ResponseEntity<Reclamation> addReclamation (@RequestBody ReclamationWithUserDetails reclamationDetails) throws MessagingException {
             Reclamation addedReclamation = serviceReclamation.addReclamation(reclamationDetails);
             return new ResponseEntity<>(addedReclamation, HttpStatus.CREATED);
         }
     @PostMapping("/addClaim")
+    @PreAuthorize(" hasRole('STUDENT')")
     public ResponseEntity<?> addClaim(@RequestBody AddReclamationRequest request) {
         Response response = serviceReclamation.addClaim(request);
         if (response.getStatus() == 200) {
@@ -85,13 +86,13 @@ public class ReclamationController {
     }
 
     @GetMapping("/with-users")
-       // @PreAuthorize("hasRole('SERVICESTAGE') or hasRole('ADMIN')")
+        @PreAuthorize("hasRole('SERVICESTAGE') or hasRole('ADMIN')")
         public List<ReclamationWithUserDetails> getAllReclamationsWithUsers () {
             return serviceReclamation.getAllReclamationsWithUsers();
         }
 
         @DeleteMapping("/deleteRec/{idReclamation}")
-       // @PreAuthorize("hasRole('SERVICESTAGE') or hasRole('ADMIN')")
+        @PreAuthorize("hasRole('SERVICESTAGE') or hasRole('ADMIN')")
         public ResponseEntity<Void> deleteReclamation ( @PathVariable long idReclamation){
             serviceReclamation.deleteReclamationById(idReclamation);
             return ResponseEntity.noContent().build();
@@ -104,14 +105,14 @@ public class ReclamationController {
 */
 
         @PutMapping("/editClaimState/{idReclamation}/{StatutReclamation}")
-//@PreAuthorize("hasRole('SERVICESTAGE') or hasRole('ADMIN')")
+@PreAuthorize("hasRole('SERVICESTAGE') or hasRole('ADMIN')")
         public Response editClaimState (@PathVariable("idReclamation") Long
         idReclamation, @PathVariable("StatutReclamation") String newClaimState){
             return serviceReclamation.editClaimState(idReclamation, newClaimState);
         }
 
         @GetMapping("/retrieveClaim/{idReclamation}")
-      //  @PreAuthorize("hasRole('SERVICESTAGE') or hasRole('ADMIN')")
+        @PreAuthorize("hasRole('SERVICESTAGE') or hasRole('ADMIN')")
         public Response retrieveClaim (@PathVariable("idReclamation") Long idReclamation){
             return serviceReclamation.retrieveClaim(idReclamation);
         }
