@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,20 +23,27 @@ public class OffreService implements IOffreService{
     OffreRepository offreRepo;
   NotificationService notificationService;
   @Override
-    public Offre AddStage(Offre offre) {
+  public Offre AddStage(Offre offre) {
+    // Get the current authenticated user
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    User currentUser = (User) authentication.getPrincipal();
 
-      Offre savedOffre = offreRepo.save(offre);
-      // Send notification to the user associated with this offer
-      if (savedOffre.getUser() != null) {
-        notificationService.notifyUser(savedOffre.getUser().getUsername(),
-          "New stage added: " + savedOffre.getTypeStage() + " - Check it out!");
-      }
-      return savedOffre;
-    }
+    // Associate the offer with the current user
+    offre.setUser(currentUser);
+
+    Offre savedOffre = offreRepo.save(offre);
+
+    // Send notification to the current user
+    notificationService.notifyUser(currentUser.getUsername(),
+      "New stage added: " + savedOffre.getTypeStage() + " - Check it out!");
+
+    return savedOffre;
+  }
 
 
 
-    @Override
+
+  @Override
     public Offre getStageById(long idstage) {
         return offreRepo.findById(idstage).get();
     }
@@ -54,23 +63,7 @@ public class OffreService implements IOffreService{
     public Offre updateStage(Offre offre) {
         return offreRepo.save(offre);
     }
-  @Override
-  public void likeStage(long idstage, User user) {
-    Offre offre = offreRepo.findById(idstage).orElse(null);
-    if (offre != null && !offre.getLikedBy().contains(user)) {
-      offre.getLikedBy().add(user);
-      offreRepo.save(offre);
-    }
-  }
 
-  @Override
-  public void dislikeStage(long idstage, User user) {
-    Offre offre = offreRepo.findById(idstage).orElse(null);
-    if (offre != null && !offre.getDislikedBy().contains(user)) {
-      offre.getDislikedBy().add(user);
-      offreRepo.save(offre);
-    }
-  }
 
 
   @Override

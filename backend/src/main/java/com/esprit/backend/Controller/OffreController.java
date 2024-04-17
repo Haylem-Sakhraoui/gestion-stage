@@ -25,7 +25,7 @@ public class OffreController {
   CvService cvService;
   IOffreService offreService;
 
-  @PostMapping("add")
+  @PostMapping("addStage")
   public Offre AddOffre(@RequestBody Offre offre) {
     return offreService.AddStage(offre);
   }
@@ -59,15 +59,7 @@ public class OffreController {
     return offreService.updateStage(offre);
   }
 
-  @PostMapping("{idstage}/like")
-  public void likeStage(@PathVariable("idstage") long idstage, @RequestBody User user) {
-    offreService.likeStage(idstage, user);
-  }
 
-  @PostMapping("{idstage}/dislike")
-  public void dislikeStage(@PathVariable("idstage") long idstage, @RequestBody User user) {
-    offreService.dislikeStage(idstage, user);
-  }
 
   @GetMapping("/match/{cvId}")
   public ResponseEntity<List<Offre>> matchCvToOffres(@PathVariable Long cvId) {

@@ -37,8 +37,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean enabled = false;
-  @OneToOne( cascade = CascadeType.ALL, mappedBy = "user")
-  private Offre offre;
+
+  @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+  private Set<Offre> offres;
+
   @OneToOne( cascade = CascadeType.ALL, mappedBy = "user")
   private CvStage cvStage;
     @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
@@ -79,4 +81,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+  @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+  private Set<Vote> votes;
 }
