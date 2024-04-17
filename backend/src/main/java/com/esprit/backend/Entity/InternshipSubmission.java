@@ -23,4 +23,9 @@ public class InternshipSubmission implements Serializable {
 
     private String report;
 
-    private double plagiarismScore;}
+    private double plagiarismScore;
+
+    @OneToOne()
+    private User user;
+
+}

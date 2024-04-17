@@ -38,7 +38,8 @@ public class SecurityConfig {
             // -- Swagger UI v3 (OpenAPI)
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/swagger-ui/index.html#/**"
+            "/swagger-ui/index.html#/**",
+
 
     };
 
@@ -50,8 +51,8 @@ public class SecurityConfig {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
-                .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/forgetPassword/**","/user/resetPassword/**","/offre/** ","/IntershipAgreement/**","/IntershipAssignmentLetter/**","/IntershipJournal/**","/Grille/**")
-                .permitAll()
+                .requestMatchers("/api/v1/auth/**", "/reclamation/**", "/user/forgetPassword/**", "/user/resetPassword/**", "/offre/**", "/Assignment/**", "/Journal/**", "/submission/**", "/Agreement/**", "/request/**","/Grille/**").permitAll()
+
                 .anyRequest()
                 .authenticated()
                 .and()

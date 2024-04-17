@@ -9,5 +9,6 @@ import java.util.List;
 public interface IAssignmentService {
     InternshipAssignmentLetter addAssignment(InternshipAssignmentLetter internshipAssignmentLetter);
     List<InternshipAssignmentLetter> getAllAssignment();
-    List<InternshipAssignmentLetter> getAssignmentByValidationType(ValidationType validationType);
+
+
 }

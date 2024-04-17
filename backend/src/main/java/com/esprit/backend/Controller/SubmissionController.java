@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 @RequestMapping("/submission")
 @AllArgsConstructor
 public class SubmissionController {
+
 
     private final SubmissionService submissionService;
     private static final Logger log = LoggerFactory.getLogger(SubmissionController.class);
@@ -83,3 +85,4 @@ public class SubmissionController {
             return ResponseEntity.notFound().build();
         }
     }}
+

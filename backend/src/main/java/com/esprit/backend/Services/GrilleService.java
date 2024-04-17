@@ -2,8 +2,12 @@ package com.esprit.backend.Services;
 
 
 import com.esprit.backend.Entity.Grille;
+import com.esprit.backend.Entity.User;
 import com.esprit.backend.Repository.GrilleRepository;
+import com.esprit.backend.Repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 public class GrilleService {
     private final GrilleRepository grilleRepository;
+    private final UserRepository userRepository;
 
     public Grille addGrille(Grille grille) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = userDetails.getUsername();
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user"));
+        grille.setUser(user);
         return grilleRepository.save(grille);
     }
 
@@ -78,3 +88,4 @@ public class GrilleService {
         return globalNote;
     }
 }
+

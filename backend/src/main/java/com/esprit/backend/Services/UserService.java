@@ -1,14 +1,12 @@
 package com.esprit.backend.Services;
 
 import com.esprit.backend.Configuration.JwtService;
+import com.esprit.backend.DTO.abilityRequest;
 import com.esprit.backend.Entity.Token;
 import com.esprit.backend.Entity.User;
 import com.esprit.backend.Repository.TokenRepository;
 import com.esprit.backend.Repository.UserRepository;
-import com.esprit.backend.auth.AuthenticationResponse;
-import com.esprit.backend.auth.Mail;
-import com.esprit.backend.auth.RegisterRequest;
-import com.esprit.backend.auth.ResetPasswordRequest;
+import com.esprit.backend.auth.*;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +30,10 @@ public class UserService implements IUserService {
     private final EmailService emailService;
     private static final int SIZE = 5;
 
-    private final String clientUrl = "http://localhost:4200";
+    private final String clientUrl = "http://localhost:4200/resetPassword";
 
     @Override
-    public AuthenticationResponse AdminAddUser(RegisterRequest request) {
+    public AuthenticationResponse AdminAddUser(RegisterRequest request) throws MessagingException {
         // Check if the user already exists
         if (userAlreadyExist(request.getEmail())) {
             throw new UnauthorizedUserException("User with email " + request.getEmail() + " already exists.");
@@ -59,7 +57,7 @@ public class UserService implements IUserService {
 
     }
     @Override
-    public AuthenticationResponse ServiceStageAddUser(RegisterRequest request) {
+    public AuthenticationResponse ServiceStageAddUser(RegisterRequest request) throws MessagingException {
 
         if (userAlreadyExist(request.getEmail())) {
             throw new UnauthorizedUserException("User with email " + request.getEmail() + " already exists.");
@@ -75,24 +73,28 @@ public class UserService implements IUserService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
+                .enabled(true)
                 .build();
 
         userRepository.save(user);
 
         var jwtToken = jwtService.generateToken(new HashMap<>(),user);
+
+        // Send an email to the user with the password
+        String subject = "Welcome to Our Platform";
+        String body = "Dear " + user.getFirstname() + ",\n\n"
+                + "Welcome to our platform! Your account has been successfully created.\n\n"
+                + "Your temporary password is: " + request.getPassword() + "\n\n"
+                + "For security reasons, we recommend changing your password after logging in.\n\n"
+                + "Thank you for joining us!";
+        Mail mail = new Mail(user.getEmail(), subject, body);
+        emailService.sendMail(mail);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
-//    private boolean isUserAdmin(UserDetails userDetails) {
-//        return userDetails.getAuthorities().stream()
-//                .anyMatch(authority -> authority.getAuthority().equals("ADMIN"));
-//    }
-//    private boolean isUserServicestage(UserDetails userDetails) {
-//        // determine if the user has the "servicestage" role
-//        return userDetails.getAuthorities().stream()
-//                .anyMatch(authority -> authority.getAuthority().equals("SERVICESTAGE"));
-//    }
+
     private boolean isValidRoles(String role) {
         // Your logic to validate the roles to be added
         return role.equals("STUDENT") || role.equals("SUPERVISOR");
@@ -156,29 +158,29 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void disableUser(String email) {
+    public void disableUser(abilityRequest request) {
         // Retrieve the user by email
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            user.setEnabled(false); // Disable the user
+            user.setEnabled(false);
             userRepository.save(user);
         } else {
-            throw new UnauthorizedUserException("User with email " + email + " not found.");
+            throw new UnauthorizedUserException("User with email " + request.getEmail() + " not found.");
         }
     }
 
     @Override
-    public void enableUser(String email) {
+    public void enableUser(abilityRequest request) {
 
         // Retrieve the user by email
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setEnabled(true); // Enable the user
             userRepository.save(user);
         } else {
-            throw new UnauthorizedUserException("User with email " + email + " not found.");
+            throw new UnauthorizedUserException("User with email " + request.getEmail() + " not found.");
         }
     }
 
@@ -225,7 +227,7 @@ public class UserService implements IUserService {
 
             userRepository.save(user);
             final String subject = "Reset Password";
-            String url = clientUrl + "/resetPassword/" + email + "/" + token;
+            String url = clientUrl ;
             String body =
                     "<div><h3>Hello " + user.getFirstname() + " " + user.getLastname() + " </h3>" +
                             "<br>" +

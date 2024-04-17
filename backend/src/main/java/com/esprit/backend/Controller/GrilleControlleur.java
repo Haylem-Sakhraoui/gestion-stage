@@ -2,9 +2,12 @@ package com.esprit.backend.Controller;
 
 
 import com.esprit.backend.Entity.Grille;
+import com.esprit.backend.Entity.InternshipJournal;
 import com.esprit.backend.Services.GrilleService;
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,16 +21,21 @@ public class GrilleControlleur {
     @Autowired
     private final GrilleService grilleService;
 
+
+
     @PostMapping("/add")
-    public ResponseEntity<Grille> addGrille(@RequestBody Grille grille) {
-        Grille newGrille = grilleService.addGrille(grille);
-        return ResponseEntity.ok(newGrille);
+    public ResponseEntity<Grille> addGrille(@RequestBody Grille grille) throws MessagingException {
+        Grille addGrille = grilleService.addGrille(grille);
+        return new ResponseEntity<>(addGrille, HttpStatus.CREATED);
     }
+
 
     @GetMapping("/getall")
     public List<Grille> getAllGrilles() {
         return grilleService.getAllGrilles();
     }
+
+
 
     @GetMapping("/calculateNote/{grilleId}")
     public ResponseEntity<Double> calculateNoteForGrille(@PathVariable Long grilleId) {

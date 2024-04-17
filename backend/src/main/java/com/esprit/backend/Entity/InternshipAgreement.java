@@ -1,5 +1,6 @@
 package com.esprit.backend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,8 +42,9 @@ public class InternshipAgreement implements Serializable {
     private Date endDate;
 
     private Long internshipDuration;
-    @Enumerated(EnumType.STRING)
-    private ValidationType validationType;
-    @OneToOne()
+
+    @ManyToOne(fetch = FetchType.EAGER)  // Ensure FetchType.EAGER here
+    @JoinColumn(name = "user_id")  // Adjust the join column name based on your entity
+    @JsonIgnore
     private User user;
 }

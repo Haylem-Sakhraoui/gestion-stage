@@ -1,9 +1,7 @@
 package com.esprit.backend.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -26,4 +24,9 @@ public class InternshipRequest implements Serializable {
     private String companyName;
     private String supervisorName;
     private String supervisorEmail;
+
+    @ManyToOne(fetch = FetchType.EAGER)  // Ensure FetchType.EAGER here
+    @JoinColumn(name = "user_id")  // Adjust the join column name based on your entity
+    @JsonIgnore
+    private User user;
 }

@@ -8,6 +8,8 @@ import com.esprit.backend.Repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +25,12 @@ public class AgreementService implements IAgreementService {
 
     @Override
     public InternshipAgreement addAgreement(InternshipAgreement internshipAgreement) {
-        return agreementRepository.save(internshipAgreement);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = userDetails.getUsername();
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user"));
+        internshipAgreement.setUser(user);
+        return agreementRepository.save( internshipAgreement);
     }
 
     @Override

@@ -23,4 +23,8 @@ public class Grille implements Serializable {
 
   private Double noteFinale;
 
+  @ManyToOne
+  @JoinColumn(name = "user_id") // Assuming the column name in Grille table is "user_id"
+  private User user;
+
 }
