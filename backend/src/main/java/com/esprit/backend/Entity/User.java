@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 
 import java.util.Collection;
+
+import java.util.Collections;
+
 import java.util.List;
 import java.util.Set;
 
@@ -47,10 +50,22 @@ public class User implements UserDetails {
     private Set<Reclamation> reclamation;
 
 
+
+
+
+/*
+=======
+>>>>>>> 282da086cf69489b764bb08939a501c01811c706
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
-    }
+    }*/
+@Override
+public Collection<? extends GrantedAuthority> getAuthorities() {
+    // Convertir le rôle de l'utilisateur en GrantedAuthority
+    return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
+
+}
 
     @Override
     public String getPassword() {
@@ -81,6 +96,10 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+<<<<<<< HEAD
   @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
   private Set<Vote> votes;
+=======
+
+>>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
 }

@@ -103,11 +103,25 @@ public List<Reclamation> getAllReclamation() {
        // Enregistrer la réclamation dans la base de données
        reclamation = reclamationRepository.save(reclamation);
 
+<<<<<<< HEAD
        // Générer le code QR pour les détails de la réclamation
        byte[] qrCodeImage = generateQrCodeForReclamation(reclamation);
 
        // Envoyer la notification par e-mail avec le code QR
        sendReclamationNotification(reclamation, qrCodeImage);
+=======
+       try {
+           // Générer le code QR pour les détails de la réclamation
+           byte[] qrCodeImage = generateQrCodeForReclamation(reclamation);
+
+           // Envoyer la notification par e-mail avec le code QR
+           sendReclamationNotification(reclamation, qrCodeImage);
+       } catch (Exception e) {
+           e.printStackTrace();
+           // Gérer l'échec de la génération du code QR ou de l'envoi de l'e-mail ici
+           // Par exemple, vous pouvez enregistrer une entrée de journal pour suivre l'erreur
+       }
+>>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
 
        // Retourner la réclamation enregistrée
        return reclamation;
@@ -212,9 +226,12 @@ public List<Reclamation> getAllReclamation() {
 
     public void sendReclamationStatus(Reclamation reclamation, StatutReclamation newStatus) throws MessagingException, IOException {
         // Read the image file and encode it as a base64 string
+<<<<<<< HEAD
         String imagePath = "C:\\Users\\USER\\Desktop\\4SAE\\Angular\\4SAE3_2023\\gestionstage\\src\\assets\\images\\client-01.png";
         byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
         String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+=======
+>>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
 
         // Construct email message
         final String subject = "Reclamation Status Update";
@@ -237,7 +254,10 @@ public List<Reclamation> getAllReclamation() {
                         "<p>The status of your reclamation has been updated:</p>" +
                         "<p><strong>New Status:</strong> " + newStatus + "</p>" +
                         "<p>Thank you for being one of our family.</p>" +
+<<<<<<< HEAD
                         "<img src=\"data:image/png;base64," + base64Image + "\" class='logo'>" +
+=======
+>>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
                         "</div>" +
                         "<div class='footer'>" +
                         "<p>This email was sent by Services Stages.</p>" +

@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+<<<<<<< HEAD
+=======
+import static com.esprit.backend.Entity.Permission.*;
+
+>>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
 
 
 @RequiredArgsConstructor

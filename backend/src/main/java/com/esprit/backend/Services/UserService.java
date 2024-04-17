@@ -1,6 +1,7 @@
 package com.esprit.backend.Services;
 
 import com.esprit.backend.Configuration.JwtService;
+import com.esprit.backend.DTO.abilityRequest;
 import com.esprit.backend.Entity.Token;
 import com.esprit.backend.Entity.User;
 import com.esprit.backend.Repository.TokenRepository;
@@ -20,6 +21,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
+<<<<<<< HEAD
   @Autowired
   private final JwtService jwtService;
   private final UserRepository userRepository;
@@ -28,6 +30,40 @@ public class UserService implements IUserService {
   private final UserDetailsService userDetailsService;
   private final EmailService emailService;
   private static final int SIZE = 5;
+=======
+    @Autowired
+    private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserDetailsService userDetailsService;
+    private final EmailService emailService;
+    private static final int SIZE = 5;
+
+    private final String clientUrl = "http://localhost:4200/resetPassword";
+
+    @Override
+    public AuthenticationResponse AdminAddUser(RegisterRequest request) throws MessagingException {
+        // Check if the user already exists
+        if (userAlreadyExist(request.getEmail())) {
+            throw new UnauthorizedUserException("User with email " + request.getEmail() + " already exists.");
+        }
+        var user = User.builder()
+                .firstname(request.getFirstname())
+                .lastname(request.getLastname())
+                .studentClass(request.getStudentClass())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(request.getRole())
+                .build();
+
+        userRepository.save(user);
+
+        var jwtToken = jwtService.generateToken(new HashMap<>(),user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+>>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
 
   private final String clientUrl = "http://localhost:4200/resetPassword";
 
@@ -37,6 +73,7 @@ public class UserService implements IUserService {
     if (userAlreadyExist(request.getEmail())) {
       throw new UnauthorizedUserException("User with email " + request.getEmail() + " already exists.");
     }
+<<<<<<< HEAD
     var user = User.builder()
       .firstname(request.getFirstname())
       .lastname(request.getLastname())
@@ -47,12 +84,34 @@ public class UserService implements IUserService {
       .build();
 
     userRepository.save(user);
+=======
+    @Override
+    public AuthenticationResponse ServiceStageAddUser(RegisterRequest request) throws MessagingException {
+
+        if (userAlreadyExist(request.getEmail())) {
+            throw new UnauthorizedUserException("User with email " + request.getEmail() + " already exists.");
+        }
+        // Validate the roles to be added (only "student" and "supervisor" roles allowed)
+        if (!isValidRoles(String.valueOf(request.getRole()))) {
+            throw new UnauthorizedUserException("Invalid roles. Only 'student' and 'supervisor' roles are allowed.");
+        }
+        var user = User.builder()
+                .firstname(request.getFirstname())
+                .lastname(request.getLastname())
+                .studentClass(request.getStudentClass())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(request.getRole())
+                .enabled(true)
+                .build();
+>>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
 
     var jwtToken = jwtService.generateToken(new HashMap<>(),user);
     return AuthenticationResponse.builder()
       .token(jwtToken)
       .build();
 
+<<<<<<< HEAD
 
   }
   @Override
@@ -96,6 +155,31 @@ public class UserService implements IUserService {
   }
   @Override
   public List<User> retrieveAllUsers() {
+=======
+        var jwtToken = jwtService.generateToken(new HashMap<>(),user);
+
+        // Send an email to the user with the password
+        String subject = "Welcome to Our Platform";
+        String body = "Dear " + user.getFirstname() + ",\n\n"
+                + "Welcome to our platform! Your account has been successfully created.\n\n"
+                + "Your temporary password is: " + request.getPassword() + "\n\n"
+                + "For security reasons, we recommend changing your password after logging in.\n\n"
+                + "Thank you for joining us!";
+        Mail mail = new Mail(user.getEmail(), subject, body);
+        emailService.sendMail(mail);
+
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+    }
+
+    private boolean isValidRoles(String role) {
+        // Your logic to validate the roles to be added
+        return role.equals("STUDENT") || role.equals("SUPERVISOR");
+    }
+    @Override
+    public List<User> retrieveAllUsers() {
+>>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
 
     return (List<User>) userRepository.findAll();
   }
