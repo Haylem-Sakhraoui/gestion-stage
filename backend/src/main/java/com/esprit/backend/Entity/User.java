@@ -46,7 +46,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
     private Set<Reclamation> reclamation;
 
-
     @OneToOne(mappedBy="user")
     private  InternshipSubmission internshipSubmission;
     @JsonIgnoreProperties("user") // Exclude user property from JSON serialization
@@ -62,6 +61,12 @@ public class User implements UserDetails {
     private Set<InternshipAgreement>internshipAgreement;
     @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
     private Set<InternshipJournal>internshipJournals;
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }*/
 
 @Override
 public Collection<? extends GrantedAuthority> getAuthorities() {

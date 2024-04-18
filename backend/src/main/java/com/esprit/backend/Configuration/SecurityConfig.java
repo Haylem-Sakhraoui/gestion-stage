@@ -53,6 +53,19 @@ public class SecurityConfig {
                 .requestMatchers(AUTH_WHITELIST).permitAll()
                 .requestMatchers("/api/v1/auth/**", "/reclamation/**", "/user/forgetPassword/**", "/user/resetPassword/**", "/offre/**", "/Assignment/**", "/Journal/**", "/submission/**", "/Agreement/**", "/request/**","/Grille/**").permitAll()
 
+
+      .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/forgetPassword/**","/user/resetPassword/**","/offre/** ").permitAll()
+
+
+                .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/**","/offre/** ","/user/forgetPassword/**","/user/resetPassword/**").permitAll()
+
+                .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/forgetPassword/**","/user/resetPassword/**","/offre/** ").permitAll()
+                .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/**","/offre/** ","/user/forgetPassword/**","/user/resetPassword/**")
+                .permitAll()
+                .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/forgetPassword/**","/user/resetPassword/**","/offre/** ")
+                .permitAll()
+                .requestMatchers("/api/v1/auth/**","/reclamation/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
