@@ -1,6 +1,7 @@
 package com.esprit.backend.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,7 +32,9 @@ public class User implements UserDetails {
     private String lastname;
     private String studentClass;
     private String email;
+
     private String password;
+
     @Enumerated(EnumType.STRING)
     @JsonIgnore
     @OneToOne
@@ -43,17 +46,28 @@ public class User implements UserDetails {
     @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
     private Set<Reclamation> reclamation;
 
+    @OneToOne(mappedBy="user")
+    private  InternshipSubmission internshipSubmission;
+    @JsonIgnoreProperties("user") // Exclude user property from JSON serialization
+    @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+    private Set<Grille>grilles;
+    @JsonIgnoreProperties("user") // Exclude user property from JSON serialization
+    @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+    private Set<InternshipRequest>internshipRequests;
+    @JsonIgnoreProperties("user") // Exclude user property from JSON serialization
+    @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+    private Set<InternshipAssignmentLetter>internshipAssignmentLetter;
+    @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+    private Set<InternshipAgreement>internshipAgreement;
+    @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+    private Set<InternshipJournal>internshipJournals;
 
 
-
-
-/*
-=======
->>>>>>> 282da086cf69489b764bb08939a501c01811c706
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }*/
+
 @Override
 public Collection<? extends GrantedAuthority> getAuthorities() {
     // Convertir le rôle de l'utilisateur en GrantedAuthority

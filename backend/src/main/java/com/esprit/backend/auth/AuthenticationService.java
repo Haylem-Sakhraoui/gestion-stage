@@ -46,7 +46,6 @@ public class AuthenticationService {
 //                throw new RuntimeException(e);
 //            }
 //        }
-
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
