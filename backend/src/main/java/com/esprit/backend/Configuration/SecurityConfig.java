@@ -11,13 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
+
 
 @Configuration
 @EnableWebSecurity
@@ -40,7 +38,8 @@ public class SecurityConfig {
             // -- Swagger UI v3 (OpenAPI)
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/swagger-ui/index.html#/**"
+            "/swagger-ui/index.html#/**",
+
 
     };
 
@@ -52,6 +51,8 @@ public class SecurityConfig {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
+                .requestMatchers("/api/v1/auth/**", "/reclamation/**", "/user/forgetPassword/**", "/user/resetPassword/**", "/offre/**", "/Assignment/**", "/Journal/**", "/submission/**", "/Agreement/**", "/request/**","/Grille/**").permitAll()
+
 
 <<<<<<< HEAD
 

@@ -8,10 +8,10 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
@@ -56,5 +56,9 @@ public class CvService implements ICVService{
     return (List<CvStage>) CvRepo.findAll();
   }
 
+  @Override
+  public CvStage AddCV(CvStage cvStage) {
+    return CvRepo.save(cvStage) ;
+  }
 
 }

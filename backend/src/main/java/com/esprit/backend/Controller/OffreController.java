@@ -26,6 +26,11 @@ public class OffreController {
   IOffreService offreService;
 
   @PostMapping("addStage")
+
+  IOffreService offreService;
+
+  @PostMapping("add")
+
   public Offre AddOffre(@RequestBody Offre offre) {
     return offreService.AddStage(offre);
   }
@@ -40,6 +45,7 @@ public class OffreController {
   public Offre getstage(@RequestParam("idstage") long idstage) {
     return offreService.getStageById(idstage);
   }
+
   @GetMapping("gettype")
   public List<Offre> getOffres(@RequestParam(required = false) String  typeStage) {
     if ( typeStage != null && ! typeStage.isEmpty()) {
@@ -48,6 +54,7 @@ public class OffreController {
       return offreService.getAllStages();
     }
   }
+
   @DeleteMapping("delete/{idstage}")
   public void DeleteStage(@PathVariable("idstage") long idstage) {
     offreService.DeleteStage(idstage);
@@ -70,6 +77,16 @@ public class OffreController {
     Set<String> cvSkills = cvStage.getSkills();
     List<Offre> matchedOffres = offreService.matchCvToOffres(cvSkills);
     return ResponseEntity.ok(matchedOffres);
+
+  @PostMapping("{idstage}/like")
+  public void likeStage(@PathVariable("idstage") long idstage) {
+    offreService.likeStage(idstage);
+  }
+
+  @PostMapping("{idstage}/dislike")
+  public void dislikeStage(@PathVariable("idstage") long idstage) {
+    offreService.dislikeStage(idstage);
+
   }
 }
 

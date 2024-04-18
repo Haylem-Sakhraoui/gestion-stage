@@ -1,7 +1,6 @@
 package com.esprit.backend.Services;
 
 import com.esprit.backend.Entity.CvStage;
-
 import java.util.List;
 
 public interface ICVService {
@@ -9,7 +8,4 @@ public interface ICVService {
 
   CvStage AddCV(CvStage cvStage);
   public List<CvStage> getAllCVs();
-
-
-
 }

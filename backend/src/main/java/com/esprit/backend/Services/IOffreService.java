@@ -15,4 +15,6 @@ public interface IOffreService {
 
   public List<Offre> getOffresByTypeStage(String typeStage);
   public List<Offre> matchCvToOffres(Set<String> cvSkills);
+  public void likeStage(long idstage);
+  public void dislikeStage(long idstage);
 }

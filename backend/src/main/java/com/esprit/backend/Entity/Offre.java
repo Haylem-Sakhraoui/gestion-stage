@@ -53,6 +53,10 @@ public class Offre {
     this.NbStagiaire = nbStagiaire;
     this.Competence = competence != null ? new HashSet<>(competence) : new HashSet<>();
   }
+    String Competence;
+  private int likes;
+  private int dislikes;
+
 }
 
 

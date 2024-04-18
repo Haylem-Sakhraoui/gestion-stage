@@ -14,14 +14,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
+
 @RequestMapping("cv")
 @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("stage")
+
 public class CvStageController {
   private CvService cvService;
 
@@ -53,10 +57,20 @@ public class CvStageController {
     CvStage cvStage = cvService.getCvById(id);
     if (cvStage != null) {
       return ResponseEntity.ok(cvStage);
+
+  public ResponseEntity<byte[]> downloadSubmission(@PathVariable Long id) {
+    CvStage cvStage = cvService.getCvById(id);
+    if (cvStage != null) {
+      HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(MediaType.APPLICATION_PDF);
+      headers.setContentDispositionFormData("filename", "cv.pdf");
+      headers.setContentLength(cvStage.getCvFile().length);
+      return new ResponseEntity<>(cvStage.getCvFile(), headers, HttpStatus.OK);
     } else {
       return ResponseEntity.notFound().build();
     }
   }
+
   @GetMapping("/cv/{id}/pdf")
   public ResponseEntity<byte[]> getPdfById(@PathVariable Long id) {
     CvStage cvStage = cvService.getCvById(id);
@@ -78,4 +92,5 @@ public class CvStageController {
   }
   }
 
+}
 
