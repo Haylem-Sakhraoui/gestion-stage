@@ -38,38 +38,7 @@ public class ReclamationService implements IReclamationService{
     private static final int SIZE = 5;
   private final UserRepository userRepository;
     private final EmailService emailService;
-   /* @Override
-=======
-    @Override
->>>>>>> 282da086cf69489b764bb08939a501c01811c706
-    public Reclamation ajouterReclamation(Reclamation reclamation){
-        reclamation = reclamationRepository.save(reclamation);
-        return reclamation;
-    }
 
-
-    @Override
-public List<Reclamation> getAllReclamation() {
-        return (List<Reclamation>) reclamationRepository.findAll();
-    }*/
-/*
-    @Override
-    public void addReclamationWithDetails(ReclamationWithUserDetails reclamationDetails) {
-        Reclamation reclamation = Reclamation.builder()
-                .dateCreation(reclamationDetails.getDateCreation())
-                .description(reclamationDetails.getDescription())
-                .statutReclamation(reclamationDetails.getStatutReclamation())
-                .user(User.builder()
-                        .firstname(reclamationDetails.getFirstname())
-                        .lastname(reclamationDetails.getLastname())
-                        .email(reclamationDetails.getEmail())
-                        .build())
-                .build();
-
-        // Save the reclamation using a repository or other method
-        reclamationRepository.save(reclamation);
-    }
-    */
    @Override
    public Reclamation addReclamation(ReclamationWithUserDetails reclamationDetails) throws MessagingException {
        // Récupérer l'utilisateur par son id_user ou par son prénom, nom et email
@@ -313,48 +282,7 @@ public List<Reclamation> getAllReclamation() {
     public Page<Reclamation> getFilteredClaims(int sortCriteria, Pageable pageable) {
         return reclamationRepository.findAllWithSorting(sortCriteria, pageable);
     }
-/*
-    @Override
-    public Response addClaimStudent(AddReclamationRequest request) {
-        try {
-            Reclamation claim = new Reclamation();
-            claim.setDescription(request.getDescription());
 
-            claim.setDateCreation(new Date());
-            claim.setStatutReclamation(StatutReclamation.EN_ATTENTE);
-            User admin = (User) userRepository.findById(request.getUser()).orElse(null);
-            claim.setUser(admin);
-            reclamationRepository.save(claim);
-            return new Response(200,"Claim added successfully");
-        }catch (Exception e){
-            return new Response(400,"Something went wrong");
-        }
-    }
-
-
-*/
-/*
-    @Override
-    public ResponseEntity<?> addClaim(@RequestBody Reclamation reclamation) {
-        // Extract current user from token
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
-
-        // Create a new Reclamation object
-        Reclamation newReclamation = new Reclamation();
-
-        // Set user and other details
-        newReclamation.setUser(currentUser);
-        newReclamation.setDescription(reclamation.getDescription());
-        newReclamation.setStatutReclamation(StatutReclamation.EN_ATTENTE);
-        newReclamation.setDateCreation(new Date());
-
-        // Save the reclamation
-        reclamationRepository.save(newReclamation);
-
-        return ResponseEntity.ok("Reclamation added successfully.");
-    }
-*/
 @Override
 public Response addClaim(AddReclamationRequest request) {
     try {

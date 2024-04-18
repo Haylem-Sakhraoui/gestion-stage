@@ -29,13 +29,13 @@ public class QrCodeGeneratorService {
         String lastname = reclamation.getUser().getLastname();
         Date dateCreation = reclamation.getDateCreation();
         String statReclamation = reclamation.getStatutReclamation().toString(); // Convertir le statut en String
-
+String email = reclamation.getUser().getEmail();
         // Format the date
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String dateCreationString = dateFormat.format(dateCreation);
 
         // Construire la chaîne de contenu à encoder dans le QR code, y compris le statut de la réclamation
-        String content = "Reclamation ID: " + reclamationId + "\nFirstname: " + firstname + "\nLastname: " + lastname + "\nDate Creation: " + dateCreationString + "\nStatut: " + statReclamation;
+        String content = "Reclamation ID: " + reclamationId + "\nFirstname: " + firstname + "\nLastname: " + lastname +"\nEmail: " + email + "\nDate Creation: " + dateCreationString + "\nStatut: " + statReclamation;
 
         // Créer le QR code
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
