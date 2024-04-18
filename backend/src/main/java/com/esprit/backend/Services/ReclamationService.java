@@ -106,7 +106,6 @@ public List<Reclamation> getAllReclamation() {
 
        // Envoyer la notification par e-mail avec le code QR
        sendReclamationNotification(reclamation, qrCodeImage);
-
        try {
            // Générer le code QR pour les détails de la réclamation
            byte[] qrCodeImage = generateQrCodeForReclamation(reclamation);
@@ -118,6 +117,7 @@ public List<Reclamation> getAllReclamation() {
            // Gérer l'échec de la génération du code QR ou de l'envoi de l'e-mail ici
            // Par exemple, vous pouvez enregistrer une entrée de journal pour suivre l'erreur
        }
+
 
        // Retourner la réclamation enregistrée
        return reclamation;
@@ -216,6 +216,9 @@ public List<Reclamation> getAllReclamation() {
 
     public void sendReclamationStatus(Reclamation reclamation, StatutReclamation newStatus) throws MessagingException, IOException {
         // Read the image file and encode it as a base64 string
+        String imagePath = "C:\\Users\\USER\\Desktop\\4SAE\\Angular\\4SAE3_2023\\gestionstage\\src\\assets\\images\\client-01.png";
+        byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
         String imagePath = "C:\\Users\\USER\\Desktop\\4SAE\\Angular\\4SAE3_2023\\gestionstage\\src\\assets\\images\\client-01.png";
         byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
@@ -243,9 +246,8 @@ public List<Reclamation> getAllReclamation() {
                         "<p>The status of your reclamation has been updated:</p>" +
                         "<p><strong>New Status:</strong> " + newStatus + "</p>" +
                         "<p>Thank you for being one of our family.</p>" +
-
                         "<img src=\"data:image/png;base64," + base64Image + "\" class='logo'>" +
-
+                        "<img src=\"data:image/png;base64," + base64Image + "\" class='logo'>" +
                         "</div>" +
                         "<div class='footer'>" +
                         "<p>This email was sent by Services Stages.</p>" +
@@ -319,48 +321,6 @@ public List<Reclamation> getAllReclamation() {
     public Page<Reclamation> getFilteredClaims(int sortCriteria, Pageable pageable) {
         return reclamationRepository.findAllWithSorting(sortCriteria, pageable);
     }
-/*
-    @Override
-    public Response addClaimStudent(AddReclamationRequest request) {
-        try {
-            Reclamation claim = new Reclamation();
-            claim.setDescription(request.getDescription());
-
-            claim.setDateCreation(new Date());
-            claim.setStatutReclamation(StatutReclamation.EN_ATTENTE);
-            User admin = (User) userRepository.findById(request.getUser()).orElse(null);
-            claim.setUser(admin);
-            reclamationRepository.save(claim);
-            return new Response(200,"Claim added successfully");
-        }catch (Exception e){
-            return new Response(400,"Something went wrong");
-        }
-    }
-
-
-*/
-/*
-    @Override
-    public ResponseEntity<?> addClaim(@RequestBody Reclamation reclamation) {
-        // Extract current user from token
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
-
-        // Create a new Reclamation object
-        Reclamation newReclamation = new Reclamation();
-
-        // Set user and other details
-        newReclamation.setUser(currentUser);
-        newReclamation.setDescription(reclamation.getDescription());
-        newReclamation.setStatutReclamation(StatutReclamation.EN_ATTENTE);
-        newReclamation.setDateCreation(new Date());
-
-        // Save the reclamation
-        reclamationRepository.save(newReclamation);
-
-        return ResponseEntity.ok("Reclamation added successfully.");
-    }
-*/
 @Override
 public Response addClaim(AddReclamationRequest request) {
     try {
@@ -387,8 +347,6 @@ public Response addClaim(AddReclamationRequest request) {
         return new Response(400, "Something went wrong");
     }
 }
-
-
 
     @Override
     public List<ReclamationWithUserDetails> getRecByStatut(StatutReclamation statutReclamation) {

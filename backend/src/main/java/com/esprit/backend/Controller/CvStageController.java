@@ -15,11 +15,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
+
+@RequestMapping("cv")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("stage")
+
 public class CvStageController {
   private CvService cvService;
 
@@ -47,6 +53,11 @@ public class CvStageController {
   }
 
   @GetMapping("/{id}")
+  public ResponseEntity<CvStage> getCvById(@PathVariable Long id) {
+    CvStage cvStage = cvService.getCvById(id);
+    if (cvStage != null) {
+      return ResponseEntity.ok(cvStage);
+
   public ResponseEntity<byte[]> downloadSubmission(@PathVariable Long id) {
     CvStage cvStage = cvService.getCvById(id);
     if (cvStage != null) {
@@ -59,4 +70,27 @@ public class CvStageController {
       return ResponseEntity.notFound().build();
     }
   }
+
+  @GetMapping("/cv/{id}/pdf")
+  public ResponseEntity<byte[]> getPdfById(@PathVariable Long id) {
+    CvStage cvStage = cvService.getCvById(id);
+    if (cvStage != null && cvStage.getCvFile() != null) {
+      byte[] pdfContent = cvStage.getCvFile();
+      return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_PDF)
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cv_" + id + ".pdf")
+        .body(pdfContent);
+    } else {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  @GetMapping("/cvs")
+  public ResponseEntity<List<CvStage>> getAllCVs() {
+    List<CvStage> cvs = cvService.getAllCVs();
+    return ResponseEntity.ok(cvs);
+  }
+  }
+
 }
+

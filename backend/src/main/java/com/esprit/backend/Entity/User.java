@@ -39,10 +39,16 @@ public class User implements UserDetails {
     @JsonIgnore
     @OneToOne
     private Token token;
+
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean enabled = false;
 
+  @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+  private Set<Offre> offres;
+
+  @OneToOne( cascade = CascadeType.ALL, mappedBy = "user")
+  private CvStage cvStage;
     @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
     private Set<Reclamation> reclamation;
 
@@ -104,5 +110,10 @@ public Collection<? extends GrantedAuthority> getAuthorities() {
     public boolean isEnabled() {
         return true;
     }
+<<<<<<< HEAD
+  @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+  private Set<Vote> votes;
+=======
 
+>>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
 }
