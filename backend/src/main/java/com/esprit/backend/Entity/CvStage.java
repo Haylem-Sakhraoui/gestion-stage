@@ -28,7 +28,6 @@ public class CvStage implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Setter(AccessLevel.NONE)
   long idCv;
-  long IdCv;
   private String Nom;
   private String Prenom;
   private String Classe;

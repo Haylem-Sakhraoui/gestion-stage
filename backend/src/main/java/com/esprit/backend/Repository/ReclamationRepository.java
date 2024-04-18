@@ -1,5 +1,6 @@
 package com.esprit.backend.Repository;
 
+import com.esprit.backend.DTO.ChartDataResponse;
 import com.esprit.backend.DTO.CountStatut;
 import com.esprit.backend.Entity.Reclamation;
 import com.esprit.backend.Entity.ReclamationWithUserDetails;
@@ -34,4 +35,8 @@ public interface ReclamationRepository extends CrudRepository<Reclamation,Long> 
 
     @Query("SELECT r FROM Reclamation r WHERE  r.user.firstname = :firstname AND r.user.lastname = :lastname ORDER BY r.idReclamation DESC")
     List<ReclamationWithUserDetails> findByFirstnameAndLastname(@Param("firstname") String firstname, @Param("lastname") String lastname);
+
+    @Query("SELECT NEW com.esprit.backend.DTO.ChartDataResponse(r.dateCreation, COUNT(r.idReclamation)) FROM Reclamation r GROUP BY r.dateCreation")
+    List<ChartDataResponse> getReclamationChartData();
+
 }

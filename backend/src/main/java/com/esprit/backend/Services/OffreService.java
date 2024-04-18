@@ -63,7 +63,7 @@ public class OffreService implements IOffreService{
     public Offre updateStage(Offre offre) {
         return offreRepo.save(offre);
     }
-  
+
   @Override
   public List<Offre> getOffresByTypeStage(String typeStage) {
     return offreRepo.findByTypeStageContainingIgnoreCase(typeStage);
@@ -71,7 +71,7 @@ public class OffreService implements IOffreService{
   public List<Offre> matchCvToOffres(Set<String> cvSkills) {
     Iterable<Offre> allOffresIterable = offreRepo.findAll();
     List<Offre> allOffres = StreamSupport.stream(allOffresIterable.spliterator(), false)
-      .collect(Collectors.toList());
+            .collect(Collectors.toList());
     List<Offre> matchedOffres = new ArrayList<>();
 
     for (Offre offre : allOffres) {
@@ -83,6 +83,7 @@ public class OffreService implements IOffreService{
       }
     }
     return matchedOffres;
+  }
   @Override
   public void likeStage(long idstage) {
    Offre offre = offreRepo.findById(idstage).orElse(null);
@@ -103,4 +104,5 @@ public class OffreService implements IOffreService{
     }
   }
 }
+
 

@@ -54,20 +54,12 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/auth/**", "/reclamation/**", "/user/forgetPassword/**", "/user/resetPassword/**", "/offre/**", "/Assignment/**", "/Journal/**", "/submission/**", "/Agreement/**", "/request/**","/Grille/**").permitAll()
 
 
-<<<<<<< HEAD
 
 
 
 
+                .requestMatchers("/api/v1/auth/**","/votes/**","/reclamation/**","/user/**","/cv/**","/offre/**","/user/forgetPassword/**","/user/resetPassword/**").permitAll()
 
-                .requestMatchers("/api/v1/auth/**","/votes/**","/reclamation/**","/user/**","/cv/**","/offre/**","/user/forgetPassword/**","/user/resetPassword/**")
-
-
-
-
-
-
-=======
       .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/forgetPassword/**","/user/resetPassword/**","/offre/** ").permitAll()
 
 
@@ -79,7 +71,6 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/auth/**","/reclamation/**","/user/forgetPassword/**","/user/resetPassword/**","/offre/** ")
                 .permitAll()
                 .requestMatchers("/api/v1/auth/**","/reclamation/**")
->>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
                 .permitAll()
                 .anyRequest()
                 .authenticated()

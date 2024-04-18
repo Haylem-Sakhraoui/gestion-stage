@@ -33,18 +33,10 @@ import java.util.Arrays;
 @EnableAspectJAutoProxy
 public class BackendApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(BackendApplication.class, args);
-  }
+	public static void main(String[] args) {
+		SpringApplication.run(BackendApplication.class, args);
+	}
 
-<<<<<<< HEAD
-
-  public void addCorsMappings(CorsRegistry registry) {
-    registry.addMapping("/**") // Spécifiez le chemin de votre API
-      .allowedOrigins("http://localhost:4200") // Autorisez les requêtes depuis ce domaine
-      .allowedMethods("GET", "POST", "PUT", "DELETE") // Autorisez les méthodes HTTP spécifiées
-      .allowCredentials(true); // Autorisez l'envoi des cook
-=======
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/api/**") // Spécifiez le chemin de votre API
 				.allowedOrigins("http://localhost:4200") // Autorisez les requêtes depuis ce domaine
@@ -52,7 +44,6 @@ public class BackendApplication {
 				.allowCredentials(true); // Autorisez l'envoi des cookies
 	}
 
->>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
 //	@Bean
 //	public JavaMailSender javaMailSender() {
 //		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -72,8 +63,4 @@ public class BackendApplication {
 //	}
 
 
-<<<<<<< HEAD
-  }
-=======
->>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
 }

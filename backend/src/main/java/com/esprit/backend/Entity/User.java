@@ -1,7 +1,6 @@
 package com.esprit.backend.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,9 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 
 import java.util.Collection;
-
 import java.util.Collections;
-
 import java.util.List;
 import java.util.Set;
 
@@ -32,9 +29,7 @@ public class User implements UserDetails {
     private String lastname;
     private String studentClass;
     private String email;
-
     private String password;
-
     @Enumerated(EnumType.STRING)
     @JsonIgnore
     @OneToOne
@@ -44,42 +39,25 @@ public class User implements UserDetails {
     private Role role;
     private Boolean enabled = false;
 
-  @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
-  private Set<Offre> offres;
+    @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+    private Set<Offre> offres;
 
-  @OneToOne( cascade = CascadeType.ALL, mappedBy = "user")
-  private CvStage cvStage;
+    @OneToOne( cascade = CascadeType.ALL, mappedBy = "user")
+    private CvStage cvStage;
     @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
     private Set<Reclamation> reclamation;
 
-    @OneToOne(mappedBy="user")
-    private  InternshipSubmission internshipSubmission;
-    @JsonIgnoreProperties("user") // Exclude user property from JSON serialization
-    @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
-    private Set<Grille>grilles;
-    @JsonIgnoreProperties("user") // Exclude user property from JSON serialization
-    @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
-    private Set<InternshipRequest>internshipRequests;
-    @JsonIgnoreProperties("user") // Exclude user property from JSON serialization
-    @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
-    private Set<InternshipAssignmentLetter>internshipAssignmentLetter;
-    @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
-    private Set<InternshipAgreement>internshipAgreement;
-    @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
-    private Set<InternshipJournal>internshipJournals;
+
+
+
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
-    }*/
+        // Convertir le rôle de l'utilisateur en GrantedAuthority
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
 
-@Override
-public Collection<? extends GrantedAuthority> getAuthorities() {
-    // Convertir le rôle de l'utilisateur en GrantedAuthority
-    return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
-
-}
+    }
 
     @Override
     public String getPassword() {
@@ -110,10 +88,8 @@ public Collection<? extends GrantedAuthority> getAuthorities() {
     public boolean isEnabled() {
         return true;
     }
-<<<<<<< HEAD
-  @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
-  private Set<Vote> votes;
-=======
 
->>>>>>> ae9697aeb5d34a336a0d9b34113ce0f9a8eb9262
+    @OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+    private Set<Vote> votes;
+
 }

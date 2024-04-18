@@ -14,72 +14,59 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
 @RequestMapping("cv")
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("stage")
-
 public class CvStageController {
-  private CvService cvService;
 
-  @PostMapping("/upload")
-  public ResponseEntity<CvStage> upload(
-    @RequestParam("file") MultipartFile file,
-    @RequestParam("nom") String nom,
-    @RequestParam("prenom") String prenom,
-    @RequestParam("classe") String classe) {
-    try {
-      byte[] CvFile = file.getBytes();
+  private final CvService cvService;
 
-      CvStage cvStage = new CvStage();
-      cvStage.setNom(nom);
-      cvStage.setPrenom(prenom);
-      cvStage.setClasse(classe);
-      cvStage.setCvFile(CvFile);
-      // Save the CV
-      CvStage savedCv = cvService.AddCV(cvStage);
-      return ResponseEntity.ok(savedCv);
-    } catch (IOException e) {
-      e.printStackTrace();
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-  }
+//  @PostMapping("/upload")
+//  public ResponseEntity<CvStage> upload(
+//          @RequestParam("file") MultipartFile file,
+//          @RequestParam("nom") String nom,
+//          @RequestParam("prenom") String prenom,
+//          @RequestParam("classe") String classe) {
+//    try {
+//      byte[] CvFile = file.getBytes();
+//      CvStage cvStage = new CvStage();
+//      cvStage.setNom(nom);
+//      cvStage.setPrenom(prenom);
+//      cvStage.setClasse(classe);
+//      cvStage.setCvFile(CvFile);
+//      // Save the CV
+//      CvStage savedCv = cvService.AddCV(cvStage);
+//      return ResponseEntity.ok(savedCv);
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//    }
+//  }
 
   @GetMapping("/{id}")
   public ResponseEntity<CvStage> getCvById(@PathVariable Long id) {
     CvStage cvStage = cvService.getCvById(id);
     if (cvStage != null) {
       return ResponseEntity.ok(cvStage);
-
-  public ResponseEntity<byte[]> downloadSubmission(@PathVariable Long id) {
-    CvStage cvStage = cvService.getCvById(id);
-    if (cvStage != null) {
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.APPLICATION_PDF);
-      headers.setContentDispositionFormData("filename", "cv.pdf");
-      headers.setContentLength(cvStage.getCvFile().length);
-      return new ResponseEntity<>(cvStage.getCvFile(), headers, HttpStatus.OK);
     } else {
       return ResponseEntity.notFound().build();
     }
   }
 
-  @GetMapping("/cv/{id}/pdf")
+  @GetMapping("/{id}/pdf")
   public ResponseEntity<byte[]> getPdfById(@PathVariable Long id) {
     CvStage cvStage = cvService.getCvById(id);
     if (cvStage != null && cvStage.getCvFile() != null) {
       byte[] pdfContent = cvStage.getCvFile();
       return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_PDF)
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cv_" + id + ".pdf")
-        .body(pdfContent);
+              .contentType(MediaType.APPLICATION_PDF)
+              .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cv_" + id + ".pdf")
+              .body(pdfContent);
     } else {
       return ResponseEntity.notFound().build();
     }
@@ -90,7 +77,4 @@ public class CvStageController {
     List<CvStage> cvs = cvService.getAllCVs();
     return ResponseEntity.ok(cvs);
   }
-  }
-
 }
-

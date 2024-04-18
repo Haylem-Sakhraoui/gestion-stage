@@ -2,12 +2,9 @@ package com.esprit.backend.Controller;
 
 import com.esprit.backend.Entity.CvStage;
 import com.esprit.backend.Entity.Offre;
-import com.esprit.backend.Entity.User;
 import com.esprit.backend.Services.CvService;
 import com.esprit.backend.Services.IOffreService;
-
 import lombok.AllArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,54 +16,45 @@ import java.util.Set;
 @AllArgsConstructor
 @Slf4j
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("offre")
+@RequestMapping("/offre")
 public class OffreController {
 
-  CvService cvService;
-  IOffreService offreService;
+  private final CvService cvService;
+  private final IOffreService offreService;
 
-  @PostMapping("addStage")
-
-  IOffreService offreService;
-
-  @PostMapping("add")
-
-  public Offre AddOffre(@RequestBody Offre offre) {
+  @PostMapping("/add")
+  public Offre addOffre(@RequestBody Offre offre) {
     return offreService.AddStage(offre);
   }
 
-  // Order 2
-  @GetMapping("getAll")
-  public List<Offre> GetALLStage() {
+  @GetMapping("/getAll")
+  public List<Offre> getAllOffres() {
     return offreService.getAllStages();
   }
 
-  @GetMapping("get")
-  public Offre getstage(@RequestParam("idstage") long idstage) {
-    return offreService.getStageById(idstage);
+  @GetMapping("/get")
+  public Offre getOffre(@RequestParam("id") long id) {
+    return offreService.getStageById(id);
   }
 
-  @GetMapping("gettype")
-  public List<Offre> getOffres(@RequestParam(required = false) String  typeStage) {
-    if ( typeStage != null && ! typeStage.isEmpty()) {
-      return offreService.getOffresByTypeStage( typeStage);
+  @GetMapping("/getByType")
+  public List<Offre> getOffresByType(@RequestParam(required = false) String type) {
+    if (type != null && !type.isEmpty()) {
+      return offreService.getOffresByTypeStage(type);
     } else {
       return offreService.getAllStages();
     }
   }
 
-  @DeleteMapping("delete/{idstage}")
-  public void DeleteStage(@PathVariable("idstage") long idstage) {
-    offreService.DeleteStage(idstage);
+  @DeleteMapping("/delete/{id}")
+  public void deleteOffre(@PathVariable("id") long id) {
+    offreService.DeleteStage(id);
   }
 
-  // Order 5
-  @PutMapping("update")
-  public Offre updateStage(@RequestBody Offre offre) {
+  @PutMapping("/update")
+  public Offre updateOffre(@RequestBody Offre offre) {
     return offreService.updateStage(offre);
   }
-
-
 
   @GetMapping("/match/{cvId}")
   public ResponseEntity<List<Offre>> matchCvToOffres(@PathVariable Long cvId) {
@@ -77,18 +65,15 @@ public class OffreController {
     Set<String> cvSkills = cvStage.getSkills();
     List<Offre> matchedOffres = offreService.matchCvToOffres(cvSkills);
     return ResponseEntity.ok(matchedOffres);
-
-  @PostMapping("{idstage}/like")
-  public void likeStage(@PathVariable("idstage") long idstage) {
-    offreService.likeStage(idstage);
   }
 
-  @PostMapping("{idstage}/dislike")
-  public void dislikeStage(@PathVariable("idstage") long idstage) {
-    offreService.dislikeStage(idstage);
+  @PostMapping("/{id}/like")
+  public void likeOffre(@PathVariable("id") long id) {
+    offreService.likeStage(id);
+  }
 
+  @PostMapping("/{id}/dislike")
+  public void dislikeOffre(@PathVariable("id") long id) {
+    offreService.dislikeStage(id);
   }
 }
-
-
-

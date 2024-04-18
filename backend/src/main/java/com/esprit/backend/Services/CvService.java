@@ -30,19 +30,19 @@ public class CvService implements ICVService{
     this.CvRepo = cvRepo;
   }
 
-  @Override
-  public CvStage AddCV(CvStage cvStage) {
-    try {
-      String cvText = cvParsingService.parsePdf(cvStage.getCvFile());
-      Set<String> skills = informationExtractor.extractSkills(cvText);
-      cvStage.setSkills(skills);
-      return CvRepo.save(cvStage);
-    } catch (IOException e) {
-      e.printStackTrace();
-      // Consider a more robust error handling strategy here
-    }
-    return null; // Or handle this case appropriately
-  }
+//  @Override
+//  public CvStage AddCV(CvStage cvStage) {
+//    try {
+//      String cvText = cvParsingService.parsePdf(cvStage.getCvFile());
+//      Set<String> skills = informationExtractor.extractSkills(cvText);
+//      cvStage.setSkills(skills);
+//      return CvRepo.save(cvStage);
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//      // Consider a more robust error handling strategy here
+//    }
+//    return null; // Or handle this case appropriately
+//  }
 
   // Implement other methods...
 
@@ -56,9 +56,9 @@ public class CvService implements ICVService{
     return (List<CvStage>) CvRepo.findAll();
   }
 
-  @Override
-  public CvStage AddCV(CvStage cvStage) {
-    return CvRepo.save(cvStage) ;
-  }
+//  @Override
+//  public CvStage AddCV(CvStage cvStage) {
+//    return CvRepo.save(cvStage) ;
+//  }
 
 }

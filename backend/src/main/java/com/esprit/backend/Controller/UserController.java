@@ -1,6 +1,5 @@
 package com.esprit.backend.Controller;
 
-import com.esprit.backend.DTO.UserStatistics;
 import com.esprit.backend.DTO.abilityRequest;
 import com.esprit.backend.Entity.User;
 import com.esprit.backend.Services.StatisticsService;
@@ -27,9 +26,8 @@ public class UserController {
 
     @GetMapping("/stat")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getUserStatistics() {
-        UserStatistics statistics = statisticsService.getUserStatistics();
-        return ResponseEntity.ok(statistics);
+    public List<Object> getUserStatistics() {
+        return statisticsService.getReclamationStat();
     }
 
     @PostMapping("/adminaddUser")

@@ -36,92 +36,57 @@ public class ReclamationService implements IReclamationService{
     private final  ReclamationRepository reclamationRepository;
     private final QrCodeGeneratorService qrCodeGeneratorService;
     private static final int SIZE = 5;
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final EmailService emailService;
 
     @Override
-    public Reclamation ajouterReclamation(Reclamation reclamation){
-        reclamation = reclamationRepository.save(reclamation);
-        return reclamation;
-    }
+    public Reclamation addReclamation(ReclamationWithUserDetails reclamationDetails) throws MessagingException {
+        // Récupérer l'utilisateur par son id_user ou par son prénom, nom et email
+        User user;
+        if (reclamationDetails.getIduser() != null) {
+            user = userRepository.findById(reclamationDetails.getIduser())
+                    .orElseThrow(() -> new NotFoundException("Utilisateur non trouvé avec l'id: " + reclamationDetails.getIduser()));
+        } else {
+            user = (User) userRepository.findByFirstnameAndLastnameAndEmail(
+                    reclamationDetails.getFirstname(),
+                    reclamationDetails.getLastname(),
+                    reclamationDetails.getEmail()
+            ).orElseThrow(() -> new NotFoundException(
+                    "Utilisateur non trouvé avec le prénom: " + reclamationDetails.getFirstname() +
+                            ", nom: " + reclamationDetails.getLastname() +
+                            ", email: " + reclamationDetails.getEmail()
+            ));
+        }
 
+        // Définir la date de création sur la date actuelle
+        Date currentDate = new Date();
 
-    @Override
-public List<Reclamation> getAllReclamation() {
-        return (List<Reclamation>) reclamationRepository.findAll();
-    }*/
-/*
-    @Override
-    public void addReclamationWithDetails(ReclamationWithUserDetails reclamationDetails) {
+        // Créer l'objet Reclamation
         Reclamation reclamation = Reclamation.builder()
-                .dateCreation(reclamationDetails.getDateCreation())
+                .dateCreation(currentDate)
                 .description(reclamationDetails.getDescription())
                 .statutReclamation(reclamationDetails.getStatutReclamation())
-                .user(User.builder()
-                        .firstname(reclamationDetails.getFirstname())
-                        .lastname(reclamationDetails.getLastname())
-                        .email(reclamationDetails.getEmail())
-                        .build())
+                .user(user)
                 .build();
 
-        // Save the reclamation using a repository or other method
-        reclamationRepository.save(reclamation);
+        // Enregistrer la réclamation dans la base de données
+        reclamation = reclamationRepository.save(reclamation);
+
+        try {
+            // Générer le code QR pour les détails de la réclamation
+            byte[] qrCodeImage = generateQrCodeForReclamation(reclamation);
+
+            // Envoyer la notification par e-mail avec le code QR
+            sendReclamationNotification(reclamation, qrCodeImage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Gérer l'échec de la génération du code QR ou de l'envoi de l'e-mail ici
+            // Par exemple, vous pouvez enregistrer une entrée de journal pour suivre l'erreur
+        }
+
+        // Retourner la réclamation enregistrée
+        return reclamation;
     }
-    */
-   @Override
-   public Reclamation addReclamation(ReclamationWithUserDetails reclamationDetails) throws MessagingException {
-       // Récupérer l'utilisateur par son id_user ou par son prénom, nom et email
-       User user;
-       if (reclamationDetails.getIduser() != null) {
-           user = userRepository.findById(reclamationDetails.getIduser())
-                   .orElseThrow(() -> new NotFoundException("Utilisateur non trouvé avec l'id: " + reclamationDetails.getIduser()));
-       } else {
-           user = (User) userRepository.findByFirstnameAndLastnameAndEmail(
-                   reclamationDetails.getFirstname(),
-                   reclamationDetails.getLastname(),
-                   reclamationDetails.getEmail()
-           ).orElseThrow(() -> new NotFoundException(
-                   "Utilisateur non trouvé avec le prénom: " + reclamationDetails.getFirstname() +
-                           ", nom: " + reclamationDetails.getLastname() +
-                           ", email: " + reclamationDetails.getEmail()
-           ));
-       }
-
-       // Définir la date de création sur la date actuelle
-       Date currentDate = new Date();
-
-       // Créer l'objet Reclamation
-       Reclamation reclamation = Reclamation.builder()
-               .dateCreation(currentDate)
-               .description(reclamationDetails.getDescription())
-               .statutReclamation(reclamationDetails.getStatutReclamation())
-               .user(user)
-               .build();
-
-       // Enregistrer la réclamation dans la base de données
-       reclamation = reclamationRepository.save(reclamation);
-
-       // Générer le code QR pour les détails de la réclamation
-       byte[] qrCodeImage = generateQrCodeForReclamation(reclamation);
-
-       // Envoyer la notification par e-mail avec le code QR
-       sendReclamationNotification(reclamation, qrCodeImage);
-       try {
-           // Générer le code QR pour les détails de la réclamation
-           byte[] qrCodeImage = generateQrCodeForReclamation(reclamation);
-
-           // Envoyer la notification par e-mail avec le code QR
-           sendReclamationNotification(reclamation, qrCodeImage);
-       } catch (Exception e) {
-           e.printStackTrace();
-           // Gérer l'échec de la génération du code QR ou de l'envoi de l'e-mail ici
-           // Par exemple, vous pouvez enregistrer une entrée de journal pour suivre l'erreur
-       }
-
-
-       // Retourner la réclamation enregistrée
-       return reclamation;
-   }
 
     public void sendReclamationNotification(Reclamation reclamation, byte[] qrCodeImage) throws MessagingException {
         // Construire le message e-mail
@@ -150,6 +115,12 @@ public List<Reclamation> getAllReclamation() {
             throw new MessagingException("Failed to generate QR code for reclamation details", e);
         }
     }
+
+
+
+
+
+
 
     @Override
     public List<Reclamation> getReclamationsByStatut(StatutReclamation statut) {
@@ -198,7 +169,7 @@ public List<Reclamation> getAllReclamation() {
     }
 
 
-@Override
+    @Override
     public Reclamation modifierReclamation(long idReclamation, StatutReclamation newStatut, String newDescription) {
         Reclamation reclamation = reclamationRepository.findById(idReclamation)
                 .orElseThrow(() -> new NotFoundException("Réclamation non trouvée pour cet id :: " + idReclamation));
@@ -216,14 +187,6 @@ public List<Reclamation> getAllReclamation() {
 
     public void sendReclamationStatus(Reclamation reclamation, StatutReclamation newStatus) throws MessagingException, IOException {
         // Read the image file and encode it as a base64 string
-        String imagePath = "C:\\Users\\USER\\Desktop\\4SAE\\Angular\\4SAE3_2023\\gestionstage\\src\\assets\\images\\client-01.png";
-        byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
-        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-
-        String imagePath = "C:\\Users\\USER\\Desktop\\4SAE\\Angular\\4SAE3_2023\\gestionstage\\src\\assets\\images\\client-01.png";
-        byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
-        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-
 
         // Construct email message
         final String subject = "Reclamation Status Update";
@@ -246,8 +209,6 @@ public List<Reclamation> getAllReclamation() {
                         "<p>The status of your reclamation has been updated:</p>" +
                         "<p><strong>New Status:</strong> " + newStatus + "</p>" +
                         "<p>Thank you for being one of our family.</p>" +
-                        "<img src=\"data:image/png;base64," + base64Image + "\" class='logo'>" +
-                        "<img src=\"data:image/png;base64," + base64Image + "\" class='logo'>" +
                         "</div>" +
                         "<div class='footer'>" +
                         "<p>This email was sent by Services Stages.</p>" +
@@ -321,32 +282,35 @@ public List<Reclamation> getAllReclamation() {
     public Page<Reclamation> getFilteredClaims(int sortCriteria, Pageable pageable) {
         return reclamationRepository.findAllWithSorting(sortCriteria, pageable);
     }
-@Override
-public Response addClaim(AddReclamationRequest request) {
-    try {
-        // Extract current user from token
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
 
-        Reclamation reclamation = new Reclamation();
-        reclamation.setDescription(request.getDescription());
-        reclamation.setDateCreation(new Date());
-        reclamation.setStatutReclamation(StatutReclamation.EN_ATTENTE);
-        reclamation.setUser(currentUser); // Set the current user as the creator
+    @Override
+    public Response addClaim(AddReclamationRequest request) {
+        try {
+            // Extract current user from token
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User) authentication.getPrincipal();
 
-        reclamationRepository.save(reclamation);
+            Reclamation reclamation = new Reclamation();
+            reclamation.setDescription(request.getDescription());
+            reclamation.setDateCreation(new Date());
+            reclamation.setStatutReclamation(StatutReclamation.EN_ATTENTE);
+            reclamation.setUser(currentUser); // Set the current user as the creator
 
-        // Generate QR code for the reclamation details
-        byte[] qrCodeImage = generateQrCodeForReclamation(reclamation);
+            reclamationRepository.save(reclamation);
 
-        // Send email notification with QR code
-        sendReclamationNotification( reclamation, qrCodeImage);
+            // Generate QR code for the reclamation details
+            byte[] qrCodeImage = generateQrCodeForReclamation(reclamation);
 
-        return new Response(200, "Reclamation added successfully");
-    } catch (Exception e) {
-        return new Response(400, "Something went wrong");
+            // Send email notification with QR code
+            sendReclamationNotification( reclamation, qrCodeImage);
+
+            return new Response(200, "Reclamation added successfully");
+        } catch (Exception e) {
+            return new Response(400, "Something went wrong");
+        }
     }
-}
+
+
 
     @Override
     public List<ReclamationWithUserDetails> getRecByStatut(StatutReclamation statutReclamation) {
@@ -362,7 +326,7 @@ public Response addClaim(AddReclamationRequest request) {
                 ))
                 .collect(Collectors.toList());
     }
-@Override
+    @Override
     public List<ReclamationWithUserDetails> getReclamationsByUserFullName(String firstname, String lastname) {
         return reclamationRepository.findByFirstnameAndLastname(firstname, lastname);
     }

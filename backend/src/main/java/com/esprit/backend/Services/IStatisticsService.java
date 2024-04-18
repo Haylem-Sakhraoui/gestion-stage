@@ -1,7 +1,7 @@
 package com.esprit.backend.Services;
 
-import com.esprit.backend.DTO.UserStatistics;
+import java.util.List;
 
 public interface IStatisticsService {
-    UserStatistics getUserStatistics();
+    List<Object> getReclamationStat();
 }
