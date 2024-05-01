@@ -24,7 +24,7 @@ public class InternshipSubmission implements Serializable {
     private String report;
 
     private double plagiarismScore;
-
+    private String status = ""; // Peut être "en attente", "acceptée", ou "refusée"
     @OneToOne()
     private User user;
 

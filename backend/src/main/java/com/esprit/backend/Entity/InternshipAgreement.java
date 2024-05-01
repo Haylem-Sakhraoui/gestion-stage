@@ -42,7 +42,7 @@ public class InternshipAgreement implements Serializable {
     private Date endDate;
 
     private Long internshipDuration;
-
+    private String status = ""; // Peut être "en attente", "acceptée", ou "refusée"
     @ManyToOne(fetch = FetchType.EAGER)  // Ensure FetchType.EAGER here
     @JoinColumn(name = "user_id")  // Adjust the join column name based on your entity
     @JsonIgnore

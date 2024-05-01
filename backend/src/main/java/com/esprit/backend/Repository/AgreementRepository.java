@@ -2,6 +2,7 @@ package com.esprit.backend.Repository;
 
 
 import com.esprit.backend.Entity.InternshipAgreement;
+import com.esprit.backend.Entity.User;
 import com.esprit.backend.Entity.ValidationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,4 +12,5 @@ public interface AgreementRepository extends JpaRepository<InternshipAgreement,L
     List<InternshipAgreement> findAll();
     List<InternshipAgreement> findByUserId(Long id);
 
+    List<InternshipAgreement> findByUser(User user);
 }

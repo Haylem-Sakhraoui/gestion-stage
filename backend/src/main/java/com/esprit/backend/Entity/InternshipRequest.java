@@ -24,6 +24,7 @@ public class InternshipRequest implements Serializable {
     private String companyName;
     private String supervisorName;
     private String supervisorEmail;
+    private String status = ""; // Peut être "en attente", "acceptée", ou "refusée"
 
     @ManyToOne(fetch = FetchType.EAGER)  // Ensure FetchType.EAGER here
     @JoinColumn(name = "user_id")  // Adjust the join column name based on your entity

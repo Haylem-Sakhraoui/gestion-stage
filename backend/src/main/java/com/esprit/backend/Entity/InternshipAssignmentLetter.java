@@ -32,7 +32,7 @@ public class InternshipAssignmentLetter implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date endDate;
     private Long telephoneNumber;
-
+    private String status = ""; // Peut être "en attente", "acceptée", ou "refusée"
 
     @ManyToOne(fetch = FetchType.EAGER)  // Ensure FetchType.EAGER here
     @JoinColumn(name = "user_id")  // Adjust the join column name based on your entity

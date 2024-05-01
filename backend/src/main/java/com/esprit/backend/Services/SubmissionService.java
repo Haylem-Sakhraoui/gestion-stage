@@ -45,7 +45,7 @@ public class SubmissionService {
             // Extract current user from token
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = (User) authentication.getPrincipal();
-
+            internshipSubmission.setStatus("en attente");
             // Associate the submission with the current user
             internshipSubmission.setUser(currentUser);
 
@@ -56,7 +56,12 @@ public class SubmissionService {
             throw new RuntimeException("Failed to add submission", e);
         }
     }
-
+    public InternshipSubmission updateSubmissionStatus(Long submissionId, String newStatus) {
+        InternshipSubmission submission = submissionRepository.findById(submissionId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid submission ID"));
+        submission.setStatus(newStatus);
+        return submissionRepository.save(submission);
+    }
 
 
     public double calculatePlagiarismScore(String text1, String text2) {

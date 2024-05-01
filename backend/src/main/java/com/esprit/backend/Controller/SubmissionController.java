@@ -1,5 +1,6 @@
 package com.esprit.backend.Controller;
 
+import com.esprit.backend.Entity.InternshipAssignmentLetter;
 import com.esprit.backend.Entity.InternshipSubmission;
 import com.esprit.backend.Services.SubmissionService;
 import lombok.AllArgsConstructor;
@@ -84,5 +85,20 @@ public class SubmissionController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }}
+    }
+
+    @PutMapping("/{assignmentId}/accept")
+    public ResponseEntity<InternshipSubmission> acceptAssignment(@PathVariable Long assignmentId) {
+        InternshipSubmission updatedSubmission = submissionService.updateSubmissionStatus(assignmentId, "acceptée");
+        return ResponseEntity.ok(updatedSubmission);
+    }
+
+    @PutMapping("/{assignmentId}/reject")
+    public ResponseEntity<InternshipSubmission> rejectAssignment(@PathVariable Long assignmentId) {
+        InternshipSubmission updatedSubmission = submissionService.updateSubmissionStatus(assignmentId, "refusée");
+        return ResponseEntity.ok(updatedSubmission);
+    }
+}
+
+
 

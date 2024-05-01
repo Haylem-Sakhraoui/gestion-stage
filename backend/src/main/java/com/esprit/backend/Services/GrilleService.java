@@ -10,11 +10,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class GrilleService {
+public class GrilleService implements IGrilleService {
     private final GrilleRepository grilleRepository;
     private final UserRepository userRepository;
 
@@ -24,11 +26,23 @@ public class GrilleService {
         User user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user"));
         grille.setUser(user);
+
+        // Ajouter la note finale lors de l'ajout de la grille
+        double noteFinale = calculateNoteForGrille(grille);
+        grille.setNoteFinale(noteFinale);
+        grille.setStatus("en attente");
         return grilleRepository.save(grille);
     }
 
-    public List<Grille> getAllGrilles() {
+    public List< Grille > getAllGrilles() {
         return grilleRepository.findAll();
+    }
+
+    public  Grille  updateGrilleStatus(Long grilleId, String newStatus) {
+        Grille  grille = grilleRepository.findById(grilleId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid request ID"));
+        grille.setStatus(newStatus);
+        return grilleRepository.save(grille);
     }
 
     public Grille getGrilleById(Long grilleId) {
@@ -64,15 +78,9 @@ public class GrilleService {
         return noteMoyenne;
     }
 
-    // Méthode pour calculer la note finale
-    public void calculateFinalNote(Long grilleId) {
-        Grille grille = grilleRepository.findById(grilleId).orElse(null);
-        if (grille != null) {
-            double noteFinale = calculateNoteForGrille(grille);
-            grille.setNoteFinale(noteFinale);
-            grilleRepository.save(grille);
-        }
-    }
+    // Méthode pour calculer la note finale (cette méthode n'est plus nécessaire)
+    // La note finale est désormais calculée et ajoutée automatiquement lors de l'ajout de la grille
+
     public double calculateGlobalNote() {
         List<Grille> grilles = grilleRepository.findAll();
         double totalNotes = 0;
@@ -87,5 +95,29 @@ public class GrilleService {
         double globalNote = (totalTaches != 0) ? totalNotes / totalTaches : 0;
         return globalNote;
     }
-}
 
+
+
+
+
+
+    @Override
+    public List<Grille> getAllgrilleWithUsers() {
+        return grilleRepository.findAllGrilleWithUsers().stream()
+                .map(grille -> {
+                    Grille dto = new Grille();
+                    dto.setGrilleId(grille.getGrilleId());
+                    dto.setNoteFinale(grille.getNoteFinale());
+                    dto.setTacheType(grille.getTacheType());
+                    dto.setSatisfactionType(grille.getSatisfactionType());
+
+                    // Assuming the user association is properly mapped in Grille entity
+                    // You can set user details here if needed
+                    dto.setUser(grille.getUser());
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
+}

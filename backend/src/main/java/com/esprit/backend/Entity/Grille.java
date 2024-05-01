@@ -22,7 +22,7 @@ public class Grille implements Serializable {
 
 
   private Double noteFinale;
-
+  private String status = ""; // Peut être "en attente", "acceptée", ou "refusée"
   @ManyToOne
   @JoinColumn(name = "user_id") // Assuming the column name in Grille table is "user_id"
   private User user;

@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface IGrilleService {
     Grille addGrille(Grille grille);
-    List<Grille> getAllGrilles();
+
+    List<Grille> getAllgrilleWithUsers();
 }
